@@ -4,7 +4,7 @@ export default [
     data: {},
     items: [
       { name: 'lennaTexture', source: '/assets/lenna.png', type: 'texture' },
-      { name: 'shibaModel', source: '/assets/shiba/shiba.gltf', type: 'model' },
+      { name: 'castleTexture', source: '/assets/castle.png', type: 'texture' },
     ],
   },
 ]
