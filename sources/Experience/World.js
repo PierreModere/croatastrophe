@@ -14,15 +14,18 @@ export default class World {
         this.experience.setPlayers()
         this.createWorld()
         this.createSkybox()
-        this.createPlayers()
-        this.spawnMob('redMob', 'left')
+        this.createDestroyZone()
+        this.initPlayers()
+
+        setInterval(() => {
+          this.spawnMob('blueMob', 'left')
+          this.spawnMob('redMob', 'right')
+        }, 500)
       }
     })
   }
 
   createWorld() {
-    this.resources.items.lennaTexture.encoding = THREE.sRGBEncoding
-
     this.sphere = new THREE.Mesh(
       new THREE.SphereGeometry(10, 32, 32),
       new THREE.MeshBasicMaterial({ color: 0xa9ff91 })
@@ -62,7 +65,17 @@ export default class World {
     this.scene.add(this.skySurface)
   }
 
-  createPlayers() {
+  createDestroyZone() {
+    this.destroyZone = new THREE.Mesh(
+      new THREE.BoxGeometry(4, 1, 1),
+      new THREE.MeshBasicMaterial({ color: 0x000000, wireframe: true })
+    )
+    this.destroyZone.name = 'destroyZone'
+    this.destroyZone.position.set(0, 4, 10)
+    this.scene.add(this.destroyZone)
+  }
+
+  initPlayers() {
     this.experience.players.forEach((player) => {
       if (player.model) {
         player.model.traverse(function (object) {
@@ -81,48 +94,24 @@ export default class World {
 
   spawnMob(type, side) {
     let position
+    let mob
     if (side == 'left') {
       position = new THREE.Vector3(-0.7, 0, -11)
     } else if (side == 'right') {
       position = new THREE.Vector3(0.7, 0, -11)
     }
 
-    let model = new THREE.Mesh(
-      new THREE.SphereGeometry(2, 8, 8),
-      new THREE.MeshBasicMaterial({ map: null })
-    )
-
-    const blueMobTexture = this.resources.items.blueMobTexture
-    blueMobTexture.flipY = false
-    const redMobTexture = this.resources.items.redMobTexture
-    redMobTexture.flipY = false
-
     if (type == 'blueMob') {
-      model.material.map = blueMobTexture
+      mob = this.resources.items.blueMobModel.scene.clone()
     } else if (type == 'redMob') {
-      model.material.map = redMobTexture
+      mob = this.resources.items.redMobModel.scene.clone()
     }
+    mob.name = type
+    mob.rotation.x = -Math.PI / 2
 
-    // // let model = this.resources.items.shibaModel.scene
-    // const materialToChange = [
-    //   model.getObjectByName('Box002_default_0'),
-    //   model.getObjectByName('Group18985_default_0'),
-    // ]
-
-    // if (type == 'blueMob') {
-    //   materialToChange.forEach((object) => {
-    //     object.material.map = blueMobTexture
-    //   })
-    // } else if (type == 'redMob') {
-    //   materialToChange.forEach((object) => {
-    //     object.material.map = redMobTexture
-    //   })
-    // }
-    model.name = type
-    model.position.set(position.x, position.y, position.z)
-    model.rotation.x = -Math.PI / 2
-
-    this.floor.add(model)
+    this.scene.attach(mob)
+    mob.position.set(position.x, position.y, position.z)
+    this.floor.attach(mob)
   }
 
   resize() {}

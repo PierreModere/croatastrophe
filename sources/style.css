@@ -14,3 +14,29 @@ body {
   width: 100vw;
   height: 100vh;
 }
+
+@font-face {
+  font-family: 'Guyon Gazebo';
+  src: url('../public/assets/fonts/GuyonGazebo-Regular.woff') format('woff2'),
+    url('../public/assets/fonts/GuyonGazebo-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+.input,
+.input2 {
+  font-family: 'Guyon Gazebo' !important;
+
+  color: #28a5ff;
+  background-image: -webkit-linear-gradient(
+    90deg,
+    #28a5ff 0%,
+    #c5f3fd 50%,
+    #28a5ff 100%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  text-fill-color: transparent;
+  -webkit-text-fill-color: transparent;
+}

@@ -21,7 +21,6 @@ export default class Resources extends EventEmitter {
     // Loader file end event
     this.loader.on('fileEnd', (_resource, _data) => {
       let data = _data
-
       // Convert to texture
       if (_resource.type === 'texture') {
         if (!(data instanceof THREE.Texture)) {
