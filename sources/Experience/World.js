@@ -8,6 +8,7 @@ export default class World {
     this.scene = this.experience.scene
     this.resources = this.experience.resources
     this.rotationSpeed = 0.005
+    this.allMobs = []
 
     this.resources.on('groupEnd', (_group) => {
       if (_group.name === 'base') {
@@ -67,7 +68,7 @@ export default class World {
 
   createDestroyZone() {
     this.destroyZone = new THREE.Mesh(
-      new THREE.BoxGeometry(4, 1, 1),
+      new THREE.BoxGeometry(10, 0.1, 0.1),
       new THREE.MeshBasicMaterial({ color: 0x000000, wireframe: true })
     )
     this.destroyZone.name = 'destroyZone'
@@ -112,6 +113,7 @@ export default class World {
     this.scene.attach(mob)
     mob.position.set(position.x, position.y, position.z)
     this.floor.attach(mob)
+    this.allMobs.push(mob)
   }
 
   resize() {}
@@ -122,6 +124,20 @@ export default class World {
       this.experience.players[0].mixer.update(
         this.experience.time.delta * 0.001
       )
+    }
+
+    for (const oneMob of this.allMobs) {
+      if (oneMob.position.z > 5) {
+        oneMob.traverse((object) => {
+          if (object.isMesh) {
+            object.geometry.dispose()
+            object.material.dispose()
+            this.scene.remove(object)
+          }
+        })
+        console.log(oneMob)
+        this.scene.remove(oneMob)
+      }
     }
   }
 
