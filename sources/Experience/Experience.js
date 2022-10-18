@@ -12,6 +12,10 @@ import World from './World.js'
 
 import assets from './assets.js'
 
+import Axis from 'axis-api'
+
+// import Axis from './axis/index'
+
 export default class Experience {
   static instance
 
@@ -39,6 +43,7 @@ export default class Experience {
     this.setRenderer()
     this.setResources()
     this.setWorld()
+    this.setControls()
 
     this.sizes.on('resize', () => {
       this.resize()
@@ -96,6 +101,57 @@ export default class Experience {
     this.world = new World()
   }
 
+  setControls() {
+    this.gamepadEmulator = Axis.createGamepadEmulator(0)
+
+    Axis.registerGamepadEmulatorKeys(this.gamepadEmulator, 0, 'a', 2) // Gamepad button index 0 (PS4 X) to button "a" from group 1
+    Axis.registerGamepadEmulatorKeys(this.gamepadEmulator, 1, 'x', 2) // Gamepad button index 1 (PS4 Square) to button "x" from group 1
+    Axis.registerGamepadEmulatorKeys(this.gamepadEmulator, 2, 'i', 2) // Gamepad button index 2 (PS4 Circle) to button "i" from group 1
+    Axis.registerGamepadEmulatorKeys(this.gamepadEmulator, 3, 's', 2) // Gamepad button index 3 (PS4 Triangle) to button "s" from group 1
+    Axis.registerGamepadEmulatorKeys(this.gamepadEmulator, 7, 'w', 2) // Gamepad button index 3 (PS4 Triangle) to button "s" from group 1
+
+    Axis.registerGamepadEmulatorKeys(this.gamepadEmulator, 13, 'a', 1) // Gamepad button index 0 (PS4 X) to button "a" from group 1
+    Axis.registerGamepadEmulatorKeys(this.gamepadEmulator, 15, 'x', 1) // Gamepad button index 1 (PS4 Square) to button "x" from group 1
+    Axis.registerGamepadEmulatorKeys(this.gamepadEmulator, 14, 'i', 1) // Gamepad button index 2 (PS4 Circle) to button "i" from group 1
+    Axis.registerGamepadEmulatorKeys(this.gamepadEmulator, 12, 's', 1) // Gamepad button index 3 (PS4 Triangle) to button "s" from group 1
+    Axis.registerGamepadEmulatorKeys(this.gamepadEmulator, 6, 'w', 1) // Gamepad button index 3 (PS4 Triangle) to button "s" from group 1
+  }
+
+  setPlayers() {
+    const player1 = Axis.createPlayer({
+      id: 1,
+      buttons: Axis.buttonManager.getButtonsById(1),
+    })
+    const player2 = Axis.createPlayer({
+      id: 2,
+      buttons: Axis.buttonManager.getButtonsById(2),
+    })
+    player1.model = this.resources.items.frogModel.scene
+    player1.animations = this.resources.items.frogModel.animations
+    player1.model.position.set(-0.7, 8.95, 4.6)
+    player1.model.scale.set(0.1, 0.1, 0.1)
+    player1.model.rotation.y = Math.PI
+
+    // player2.model = this.resources.items.frogModel.scene
+    // player2.animations = this.resources.items.frogModel.animations
+    // player2.model.position.set(4.7, 8.95, 4.6)
+    // player2.model.scale.set(0.1, 0.1, 0.1)
+    // player2.model.rotation.y = Math.PI
+
+    player1.addEventListener('keydown', this.player1KeydownHandler)
+    player2.addEventListener('keydown', this.player2KeydownHandler)
+
+    this.players = [player1, player2]
+  }
+
+  player1KeydownHandler(e) {
+    console.log('Joueur 1 : ' + e.key)
+  }
+
+  player2KeydownHandler(e) {
+    console.log('Joueur 2 : ' + e.key)
+  }
+
   update() {
     if (this.stats) this.stats.update()
 
@@ -104,6 +160,8 @@ export default class Experience {
     if (this.world) this.world.update()
 
     if (this.renderer) this.renderer.update()
+
+    if (this.gamepadEmulator) this.gamepadEmulator.update()
 
     window.requestAnimationFrame(() => {
       this.update()

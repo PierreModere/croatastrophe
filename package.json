@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "axis-api": "github:gobelins-axis/axis-api",
+    "gsap": "^3.11.3",
     "lil-gui": "^0.16.1",
     "stats.js": "^0.17.0",
     "stylus": "^0.58.1",

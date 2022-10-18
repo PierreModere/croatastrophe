@@ -17,46 +17,48 @@ export default class Camera {
     this.mode = 'debug' // defaultCamera \ debugCamera
 
     this.setInstance()
-    // this.setModes()
+    this.setModes()
   }
 
+  // this.instance = new THREE.PerspectiveCamera(
+  //   45,
+  //   this.config.width / this.config.height,
+  //   0.1,
+  //   100
+  // )
+  // this.instance.position.x = 0
+  // this.instance.position.y = 11.5
+  // this.instance.position.z = 12
+  // this.scene.add(this.instance)
+
+  // const axesHelper = new THREE.AxesHelper(50)
+  // this.scene.add(axesHelper)
   setInstance() {
     // Set up
-    // this.instance = new THREE.PerspectiveCamera(
-    //   45,
-    //   this.config.width / this.config.height,
-    //   0.1,
-    //   150
-    // )
-
-    // this.scene.add(this.instance)
-
     this.instance = new THREE.PerspectiveCamera(
       45,
       this.config.width / this.config.height,
       0.1,
-      100
+      150
     )
-    this.instance.position.x = 0
-    this.instance.position.y = 11.5
-    this.instance.position.z = 12
-    this.scene.add(this.instance)
+    this.instance.rotation.reorder('YXZ')
 
-    const axesHelper = new THREE.AxesHelper(50)
-    this.scene.add(axesHelper)
+    this.scene.add(this.instance)
   }
 
   setModes() {
     this.modes = {}
 
-    // DefaultF
+    // Default
     this.modes.default = {}
     this.modes.default.instance = this.instance.clone()
+    this.modes.default.instance.rotation.reorder('YXZ')
 
     // Debug
     this.modes.debug = {}
     this.modes.debug.instance = this.instance.clone()
-    this.modes.debug.instance.position.set(50, 35, 5)
+    this.modes.debug.instance.rotation.reorder('YXZ')
+    this.modes.debug.instance.position.set(0, 11.5, 12)
 
     this.modes.debug.orbitControls = new OrbitControls(
       this.modes.debug.instance,
@@ -82,12 +84,13 @@ export default class Camera {
   }
 
   update() {
-    // // Update debug orbit controls
-    // this.modes.debug.orbitControls.update()
-    // // Apply coordinates
-    // this.instance.position.copy(this.modes[this.mode].instance.position)
-    // this.instance.quaternion.copy(this.modes[this.mode].instance.quaternion)
-    // this.instance.updateMatrixWorld() // To be used in projection
+    // Update debug orbit controls
+    this.modes.debug.orbitControls.update()
+
+    // Apply coordinates
+    this.instance.position.copy(this.modes[this.mode].instance.position)
+    this.instance.quaternion.copy(this.modes[this.mode].instance.quaternion)
+    this.instance.updateMatrixWorld() // To be used in projection
   }
 
   destroy() {
