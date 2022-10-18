@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+import { ceilPowerOfTwo } from 'three/src/math/MathUtils.js'
 import Experience from './Experience.js'
 
 export default class World {
@@ -116,6 +117,20 @@ export default class World {
     this.allMobs.push(mob)
   }
 
+  removeMob(mob) {
+    mob.traverse((object) => {
+      if (object.isMesh) {
+        object.geometry.dispose()
+        object.material.dispose()
+      }
+    })
+    this.floor.remove(mob)
+    const index = this.allMobs.indexOf(mob)
+    if (index > -1) {
+      this.allMobs.splice(index, 1) // 2nd parameter means remove one item only
+    }
+  }
+
   resize() {}
 
   update() {
@@ -127,17 +142,8 @@ export default class World {
     }
 
     for (const oneMob of this.allMobs) {
-      if (oneMob.position.z > 5) {
-        oneMob.traverse((object) => {
-          if (object.isMesh) {
-            object.geometry.dispose()
-            object.material.dispose()
-            this.scene.remove(object)
-          }
-        })
-        console.log(oneMob)
-        this.scene.remove(oneMob)
-      }
+      if (oneMob.getWorldPosition(new THREE.Vector3()).z > 8)
+        this.removeMob(oneMob)
     }
   }
 
