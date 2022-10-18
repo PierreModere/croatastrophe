@@ -15,6 +15,7 @@ export default class World {
         this.createWorld()
         this.createSkybox()
         this.createPlayers()
+        this.spawnMob('redMob', 'left')
       }
     })
   }
