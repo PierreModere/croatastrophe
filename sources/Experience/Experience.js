@@ -129,7 +129,7 @@ export default class Experience {
     player1.model = this.resources.items.frogModel.scene
     player1.animations = this.resources.items.frogModel.animations
     player1.model.position.set(-0.7, 8.95, 4.6)
-    player1.model.scale.set(0.1, 0.1, 0.1)
+    player1.model.scale.set(0.5, 0.5, 0.5)
     player1.model.rotation.y = Math.PI
 
     // player2.model = this.resources.items.frogModel.scene
