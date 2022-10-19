@@ -149,6 +149,7 @@ export default class Experience {
 
   player1KeydownHandler(e) {
     console.log('Joueur 1 : ' + e.key)
+
     document.querySelector('.input2').innerHTML = e.key
   }
 
