@@ -110,6 +110,17 @@ export default class Experience {
   setControls() {
     this.gamepadEmulator = Axis.createGamepadEmulator(0)
 
+    Axis.registerKeys('q', 'a', 1) // keyboard key "q" to button "a" from group 1
+    Axis.registerKeys('d', 'x', 1) // keyboard key "d" to button "x" from group 1
+    Axis.registerKeys('z', 'i', 1) // keyboard key "z" to button "i" from group 1
+    Axis.registerKeys('s', 's', 1) // keyboard key "s" to button "s" from group 1
+
+    Axis.registerKeys('ArrowLeft', 'a', 2) // keyboard key "ArrowLeft" to button "a" from group 2
+    Axis.registerKeys('ArrowRight', 'x', 2) // keyboard key "ArrowRight" to button "x" from group 2
+    Axis.registerKeys('ArrowUp', 'i', 2) // keyboard key "ArrowUp" to button "i" from group 2
+    Axis.registerKeys('ArrowDown', 's', 2) // keyboard key "ArrowDown" to button "s" from group 2
+    Axis.registerKeys('Enter', 'w', 2) // keyboard key "Enter" to button "w" from group 2
+
     Axis.registerGamepadEmulatorKeys(this.gamepadEmulator, 0, 'a', 2) // Gamepad button index 0 (PS4 X) to button "a" from group 1
     Axis.registerGamepadEmulatorKeys(this.gamepadEmulator, 1, 'x', 2) // Gamepad button index 1 (PS4 Square) to button "x" from group 1
     Axis.registerGamepadEmulatorKeys(this.gamepadEmulator, 2, 'i', 2) // Gamepad button index 2 (PS4 Circle) to button "i" from group 1
