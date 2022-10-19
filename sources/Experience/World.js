@@ -11,9 +11,11 @@ export default class World {
     this.resources = this.experience.resources
     this.rotationSpeed = 0.005
     this.allMobs = []
-    this.counter = 0
-    this.spawningDelay = 1000
-    this.patternIndex = 0
+
+    this.spawnMobDelta = 0
+    this.spawnMobDelay = 1000
+
+    this.mobPatternIndex = 0
     this.mobLineIndex = 0
 
     this.mobPatterns = [
@@ -146,9 +148,9 @@ export default class World {
   }
 
   spawnPattern() {
-    if (this.counter >= this.spawningDelay) {
-      if (this.mobLineIndex < this.mobPatterns[this.patternIndex].length) {
-        this.mobPatterns[this.patternIndex][this.mobLineIndex].forEach(
+    if (this.spawnMobDelta >= this.spawnMobDelay) {
+      if (this.mobLineIndex < this.mobPatterns[this.mobPatternIndex].length) {
+        this.mobPatterns[this.mobPatternIndex][this.mobLineIndex].forEach(
           (mob) => {
             this.spawnMob(mob.type, mob.side)
           }
@@ -156,10 +158,10 @@ export default class World {
         this.mobLineIndex += 1
       } else {
         this.mobLineIndex = 0
-        this.patternIndex = 0
+        this.mobPatternIndex = 0
       }
 
-      this.counter -= this.spawningDelay
+      this.spawnMobDelta -= this.spawnMobDelay
     }
   }
 
@@ -175,7 +177,7 @@ export default class World {
     }
 
     // Increment counter
-    this.counter += this.experience.time.delta
+    this.spawnMobDelta += this.experience.time.delta
     this.spawnPattern()
 
     // Remove mobs when outside of view
