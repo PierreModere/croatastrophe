@@ -5,7 +5,16 @@ export default [
     items: [
       { name: 'lennaTexture', source: '/assets/lenna.png', type: 'texture' },
       { name: 'castleTexture', source: '/assets/castle.png', type: 'texture' },
-      { name: 'frogModel', source: '/assets/models/frog.gltf', type: 'model' },
+      {
+        name: 'player1Model',
+        source: '/assets/models/frog.gltf',
+        type: 'model',
+      },
+      {
+        name: 'player2Model',
+        source: '/assets/models/frog2.gltf',
+        type: 'model',
+      },
       {
         name: 'blueMobModel',
         source: '/assets/models/blueMob.gltf',

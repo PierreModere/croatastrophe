@@ -35,6 +35,7 @@ export default class Experience {
 
     this.time = new Time()
     this.sizes = new Sizes()
+
     this.setConfig()
     this.setDebug()
     this.setStats()
@@ -126,17 +127,17 @@ export default class Experience {
       id: 2,
       buttons: Axis.buttonManager.getButtonsById(2),
     })
-    player1.model = this.resources.items.frogModel.scene
-    player1.animations = this.resources.items.frogModel.animations
+    player1.model = this.resources.items.player1Model.scene
+    player1.animations = this.resources.items.player1Model.animations
     player1.model.position.set(-0.7, 8.95, 4.6)
     player1.model.scale.set(0.5, 0.5, 0.5)
     player1.model.rotation.y = Math.PI
 
-    // player2.model = this.resources.items.frogModel.scene
-    // player2.animations = this.resources.items.frogModel.animations
-    // player2.model.position.set(4.7, 8.95, 4.6)
-    // player2.model.scale.set(0.1, 0.1, 0.1)
-    // player2.model.rotation.y = Math.PI
+    player2.model = this.resources.items.player2Model.scene
+    player2.animations = this.resources.items.player2Model.animations
+    player2.model.position.set(0.8, 8.95, 4.6)
+    player2.model.scale.set(0.5, 0.5, 0.5)
+    player2.model.rotation.y = Math.PI
 
     player1.addEventListener('keydown', this.player1KeydownHandler)
     player2.addEventListener('keydown', this.player2KeydownHandler)

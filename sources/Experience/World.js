@@ -1,6 +1,7 @@
 import * as THREE from 'three'
 import { ceilPowerOfTwo } from 'three/src/math/MathUtils.js'
 import Experience from './Experience.js'
+import gsap from 'gsap'
 
 export default class World {
   constructor(_options) {
@@ -10,6 +11,8 @@ export default class World {
     this.resources = this.experience.resources
     this.rotationSpeed = 0.005
     this.allMobs = []
+    this.counter = 0
+    this.spawningDelay = 1000
 
     this.resources.on('groupEnd', (_group) => {
       if (_group.name === 'base') {
@@ -18,12 +21,22 @@ export default class World {
         this.createSkybox()
         this.createDestroyZone()
         this.initPlayers()
+        // this.initMobs()
 
-        setInterval(() => {
-          this.spawnMob('blueMob', 'left')
-          this.spawnMob('redMob', 'right')
-        }, 500)
+        // setInterval(() => {
+        //   this.spawnMob('blueMob', 'left')
+        //   this.spawnMob('redMob', 'right')
+        // }, 500)
       }
+    })
+  }
+
+  initMobs() {
+    gsap.set('.experience', {
+      delay: 1,
+      onRepeat: this.spawnMob('blueMob', 'right'),
+      repeat: -1,
+      repeatDelay: 1,
     })
   }
 
@@ -32,6 +45,8 @@ export default class World {
       new THREE.SphereGeometry(10, 32, 32),
       new THREE.MeshBasicMaterial({ color: 0xa9ff91 })
     )
+    this.sphere.scale.x = 2
+
     this.torus = new THREE.Mesh(
       new THREE.CylinderGeometry(10.1, 10.1, 3, 32, 32),
       new THREE.MeshBasicMaterial({ color: 0xbac1ca })
@@ -80,6 +95,7 @@ export default class World {
   initPlayers() {
     this.experience.players.forEach((player) => {
       if (player.model) {
+        player.model.name = 'player1'
         player.model.traverse(function (object) {
           if (object.isMesh) {
             object.castShadow = true
@@ -136,12 +152,24 @@ export default class World {
   update() {
     if (this.floor) {
       this.floor.rotation.x += this.rotationSpeed
-      this.experience.players[0].mixer.update(
-        this.experience.time.delta * 0.001
-      )
+      this.experience.players.forEach((player) => {
+        player.mixer.update(this.experience.time.delta * 0.001)
+      })
+    }
+
+    this.counter += this.experience.time.delta
+    if (this.counter >= this.spawningDelay) {
+      this.spawnMob('blueMob', 'right')
+      this.counter -= this.spawningDelay
     }
 
     for (const oneMob of this.allMobs) {
+      // console.log(
+      //   this.allMobs[0]
+      //     .getWorldPosition(new THREE.Vector3())
+      //     .distanceTo(this.scene.getObjectByName('player1').position)
+      // )
+
       if (oneMob.getWorldPosition(new THREE.Vector3()).z > 8)
         this.removeMob(oneMob)
     }

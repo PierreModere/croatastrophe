@@ -17,7 +17,7 @@ export default class Camera {
     this.mode = 'debug' // defaultCamera \ debugCamera
 
     this.setInstance()
-    this.setModes()
+    // this.setModes()
   }
 
   // this.instance = new THREE.PerspectiveCamera(
@@ -41,7 +41,11 @@ export default class Camera {
       0.1,
       150
     )
-    this.instance.rotation.reorder('YXZ')
+    this.instance.position.set(0, 17.8, 16.6)
+
+    // this.instance.rotation.reorder('YXZ')
+    this.instance.rotation.x = -Math.PI / 12
+    console.log(this.instance.rotation)
 
     this.scene.add(this.instance)
   }
@@ -58,13 +62,13 @@ export default class Camera {
     this.modes.debug = {}
     this.modes.debug.instance = this.instance.clone()
     this.modes.debug.instance.rotation.reorder('YXZ')
-    this.modes.debug.instance.position.set(0, 11.5, 12)
+    this.modes.debug.instance.position.set(0, 17.8, 16.6)
 
     this.modes.debug.orbitControls = new OrbitControls(
       this.modes.debug.instance,
       this.targetElement
     )
-    this.modes.debug.orbitControls.enabled = this.modes.debug.active
+    this.modes.debug.orbitControls.enabled = false
     this.modes.debug.orbitControls.screenSpacePanning = true
     this.modes.debug.orbitControls.enableKeys = false
     this.modes.debug.orbitControls.zoomSpeed = 0.25
@@ -76,20 +80,26 @@ export default class Camera {
     this.instance.aspect = this.config.width / this.config.height
     this.instance.updateProjectionMatrix()
 
-    this.modes.default.instance.aspect = this.config.width / this.config.height
-    this.modes.default.instance.updateProjectionMatrix()
+    this.instance.aspect = this.config.width / this.config.height
+    this.instance.updateProjectionMatrix()
 
-    this.modes.debug.instance.aspect = this.config.width / this.config.height
-    this.modes.debug.instance.updateProjectionMatrix()
+    this.instance.aspect = this.config.width / this.config.height
+    this.instance.updateProjectionMatrix()
+
+    // this.modes.default.instance.aspect = this.config.width / this.config.height
+    // this.modes.default.instance.updateProjectionMatrix()
+
+    // this.modes.debug.instance.aspect = this.config.width / this.config.height
+    // this.modes.debug.instance.updateProjectionMatrix()
   }
 
   update() {
     // Update debug orbit controls
-    this.modes.debug.orbitControls.update()
+    // this.modes.debug.orbitControls.update()
 
     // Apply coordinates
-    this.instance.position.copy(this.modes[this.mode].instance.position)
-    this.instance.quaternion.copy(this.modes[this.mode].instance.quaternion)
+    // this.instance.position.copy(this.modes[this.mode].instance.position)
+    // this.instance.quaternion.copy(this.modes[this.mode].instance.quaternion)
     this.instance.updateMatrixWorld() // To be used in projection
   }
 
