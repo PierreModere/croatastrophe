@@ -152,7 +152,6 @@ export default class World {
 
   spawnPattern() {
     this.spawnMobDelta += this.experience.time.delta
-    console.log('spawnMobDelta: ' + this.spawnMobDelta)
 
     // Check if it's time to spawn a mob
     if (this.spawnMobDelta >= this.spawnMobDelay) {
@@ -168,9 +167,18 @@ export default class World {
         // Increment mobLine to go to next line or end the pattern
         this.mobLineIndex += 1
       } else {
-        // If there is no more mobLine to spawn, reset the mobLine and chose a random mobPattern
-        this.mobLineIndex = 0
-        this.mobPatternIndex = 0 // TODO: random between O and this.mobPatterns.length - 1
+        // If there is no more mobLine to spawn
+        this.spawnPatternDelta += this.spawnMobDelta
+        console.log('spawnPatternDelta: ' + this.spawnPatternDelta)
+
+        // Check if it's time to go to the next pattern
+        if (this.spawnPatternDelta >= this.spawnPatternDelay) {
+          // Reset the mobLine and chose a random mobPattern
+          this.mobLineIndex = 0
+          this.mobPatternIndex = 0 // TODO: random between O and this.mobPatterns.length - 1
+
+          this.spawnPatternDelta = 0
+        }
       }
 
       this.spawnMobDelta -= this.spawnMobDelay
