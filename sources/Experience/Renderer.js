@@ -24,7 +24,7 @@ export default class Renderer {
       this.debugFolder = this.debug.addFolder('renderer')
     }
 
-    this.usePostprocess = true
+    this.usePostprocess = false
 
     this.setInstance()
     this.setPostProcess()
@@ -143,7 +143,7 @@ export default class Renderer {
     )
     this.postProcess.composer.addPass(this.postProcess.renderPass)
     this.postProcess.composer.addPass(this.postProcess.customOutline)
-    // this.postProcess.composer.addPass(this.postProcess.effectFXAA)
+    this.postProcess.composer.addPass(this.postProcess.effectFXAA)
     this.postProcess.composer.addPass(this.postProcess.gammaCorrectionPass)
   }
 

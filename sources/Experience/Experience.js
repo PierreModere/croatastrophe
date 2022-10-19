@@ -13,6 +13,7 @@ import World from './World.js'
 import assets from './assets.js'
 
 import Axis from 'axis-api'
+import { ceilPowerOfTwo } from 'three/src/math/MathUtils.js'
 
 // import Axis from './axis/index'
 
@@ -35,6 +36,7 @@ export default class Experience {
 
     this.time = new Time()
     this.sizes = new Sizes()
+    this.gameState = 'debug'
 
     this.setConfig()
     this.setDebug()
@@ -42,11 +44,12 @@ export default class Experience {
     this.setScene()
     this.setCamera()
     this.setRenderer()
-    this.setResources()
-    this.setWorld()
     this.setControls()
+    this.setPlayers()
 
-    this.gameState = 'menu'
+    // this.setResources()
+    // this.setWorld()
+    // this.setControls()
 
     this.sizes.on('resize', () => {
       this.resize()
@@ -124,52 +127,74 @@ export default class Experience {
   }
 
   setPlayers() {
-    const player1 = Axis.createPlayer({
+    this.player1 = Axis.createPlayer({
       id: 1,
       buttons: Axis.buttonManager.getButtonsById(1),
       joysticks: Axis.joystick1,
     })
-    const player2 = Axis.createPlayer({
+    this.player2 = Axis.createPlayer({
       id: 2,
       buttons: Axis.buttonManager.getButtonsById(2),
       joysticks: Axis.joystick2,
     })
-    player1.model = this.resources.items.player1Model.scene
-    player1.animations = this.resources.items.player1Model.animations
-    player1.model.position.set(-0.7, 8.95, 4.6)
-    player1.model.scale.set(0.5, 0.5, 0.5)
-    player1.model.rotation.y = Math.PI
-    player1.name = 'Player1'
 
-    player2.model = this.resources.items.player2Model.scene
-    player2.animations = this.resources.items.player2Model.animations
-    player2.model.position.set(0.8, 8.95, 4.6)
-    player2.model.scale.set(0.5, 0.5, 0.5)
-    player2.model.rotation.y = Math.PI
-    player2.name = 'Player2'
-
-    player1.addEventListener('keydown', this.player1KeydownHandler)
-    player2.addEventListener('keydown', this.player2KeydownHandler)
-
-    player1.addEventListener('joystick:move', this.player1JoystickMoveHandler)
-    player2.addEventListener('joystick:move', this.player2JoystickMoveHandler)
-
-    this.players = [player1, player2]
+    this.players = [this.player1, this.player2]
+    this.setEventListeners()
   }
 
-  player1JoystickMoveHandler(e) {}
+  assignModelToPlayers() {
+    this.player1.model = this.resources.items.player1Model.scene
+    this.player1.animations = this.resources.items.player1Model.animations
+    this.player1.model.position.set(-0.7, 8.95, 4.6)
+    this.player1.model.scale.set(0.5, 0.5, 0.5)
+    this.player1.model.rotation.y = Math.PI
+    this.player1.name = 'Player1'
 
-  player2JoystickMoveHandler(e) {}
-
-  player1KeydownHandler(e) {
-    console.log('Joueur 1 : ' + e.key)
-
-    document.querySelector('.input2').innerHTML = e.key
+    this.player2.model = this.resources.items.player2Model.scene
+    this.player2.animations = this.resources.items.player2Model.animations
+    this.player2.model.position.set(0.8, 8.95, 4.6)
+    this.player2.model.scale.set(0.5, 0.5, 0.5)
+    this.player2.model.rotation.y = Math.PI
+    this.player2.name = 'Player2'
   }
 
-  player2KeydownHandler(e) {
-    console.log('Joueur 2 : ' + e.key)
-    document.querySelector('.input').innerHTML = e.key
+  setEventListeners() {
+    switch (this.gameState) {
+      case 'menu':
+        this.player1.addEventListener('keydown', this.launchGame)
+        this.player2.addEventListener('keydown', this.launchGame)
+
+        // this.player1.addEventListener(
+        //   'joystick:move',
+        //   this.player1JoystickMoveHandler
+        // )
+        // this.player2.addEventListener(
+        //   'joystick:move',
+        //   this.player2JoystickMoveHandler
+        // )
+        break
+      case 'intro':
+        break
+      case 'debug':
+        this.launchGame()
+        break
+      case 'playing':
+        this.player1.addEventListener('keydown', this.world.attackMob)
+        this.player2.addEventListener('keydown', this.world.attackMob)
+        break
+      case 'pause':
+        break
+    }
+  }
+
+  launchGame = () => {
+    console.log('Launched!')
+    this.setResources()
+    this.setWorld()
+    this.gameState = 'playing'
+    this.player1.removeEventListener('keydown', this.launchGame)
+    this.player2.removeEventListener('keydown', this.launchGame)
+    this.setEventListeners()
   }
 
   setGameState() {}

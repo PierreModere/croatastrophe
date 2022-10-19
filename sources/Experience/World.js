@@ -48,10 +48,16 @@ export default class World {
 
     this.resources.on('groupEnd', (_group) => {
       if (_group.name === 'base') {
-        this.experience.setPlayers()
         this.createWorld()
         this.createSkybox()
+        this.experience.assignModelToPlayers()
         this.initPlayers()
+      }
+    })
+
+    this.resources.on('progress', (_group) => {
+      if (_group.name === 'base') {
+        console.log(parseInt((_group.loaded / _group.toLoad) * 100), '%')
       }
     })
   }
@@ -60,6 +66,7 @@ export default class World {
     this.floor = new THREE.Group()
 
     this.floor.name = 'Floor'
+    this.scene.add(this.resources.items.statueModel.scene)
     this.scene.add(this.floor)
     const planet = this.resources.items.planetModel.scene
     planet.name = 'Planet'
@@ -108,6 +115,26 @@ export default class World {
     })
   }
 
+  attackMob = (e) => {
+    if (e.key == 'a') {
+      const keySide = e.id == 1 ? 'left' : 'right'
+
+      for (const oneMob of this.allMobs) {
+        if (
+          oneMob.getWorldPosition(new THREE.Vector3()).z > 2 &&
+          oneMob.side == keySide
+        ) {
+          this.removeMob(oneMob)
+        } else if (
+          oneMob.getWorldPosition(new THREE.Vector3()).z > 2 &&
+          oneMob.side == keySide
+        ) {
+          this.removeMob(oneMob)
+        }
+      }
+    }
+  }
+
   spawnMob(type, side) {
     if (!type || !side) return
     let position
@@ -124,6 +151,8 @@ export default class World {
       mob = this.resources.items.redMobModel.scene.clone()
     }
     mob.name = type
+    mob.type = type
+    mob.side = side
     mob.rotation.x = -Math.PI / 2
 
     this.scene.attach(mob)
@@ -210,6 +239,7 @@ export default class World {
 
   checkHealth() {
     if (this.playerHealth <= 0) {
+      alert('ARRETE DE JOUER')
     }
   }
 

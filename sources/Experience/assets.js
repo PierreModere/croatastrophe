@@ -7,7 +7,7 @@ export default [
       { name: 'castleTexture', source: '/assets/castle.png', type: 'texture' },
       {
         name: 'player1Model',
-        source: '/assets/models/frog.gltf',
+        source: '/assets/models/frog3.gltf',
         type: 'model',
       },
       {
@@ -33,6 +33,11 @@ export default [
       {
         name: 'planetModel',
         source: '/assets/models/planet.gltf',
+        type: 'model',
+      },
+      {
+        name: 'statueModel',
+        source: '/assets/models/statue.gltf',
         type: 'model',
       },
     ],

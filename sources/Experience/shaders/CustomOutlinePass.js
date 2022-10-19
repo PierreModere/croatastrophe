@@ -249,7 +249,7 @@ class CustomOutlinePass extends Pass {
         sceneColorBuffer: {},
         depthBuffer: {},
         surfaceBuffer: {},
-        outlineColor: { value: new THREE.Color(0xffffff) },
+        outlineColor: { value: new THREE.Color(0x000000) },
         //4 scalar values packed in one uniform: depth multiplier, depth bias, and same for normals.
         multiplierParameters: {
           value: new THREE.Vector4(0.9, 20, 1, 1),
