@@ -9,7 +9,7 @@ export default class World {
     this.config = this.experience.config
     this.scene = this.experience.scene
     this.resources = this.experience.resources
-    this.rotationSpeed = 0.005
+    this.rotationSpeed = 0.003
     this.allMobs = []
     this.counter = 0
     this.spawningDelay = 1000
@@ -53,14 +53,23 @@ export default class World {
         this.createSkybox()
         this.createDestroyZone()
         this.initPlayers()
-        // this.initMobs()
-
-        // setInterval(() => {
-        //   this.spawnMob('blueMob', 'left')
-        //   this.spawnMob('redMob', 'right')
-        // }, 500)
+        this.initWeapons()
       }
     })
+  }
+
+  initWeapons() {
+    // const trumpet = this.resources.items.trumpetModel.scene
+    // trumpet.name = 'Trumpet'
+    // const targetPosition = this.scene
+    //   .getObjectByName('mixamorigRightHand')
+    //   .getWorldPosition(new THREE.Vector3())
+    // console.log(targetPosition)
+    // trumpet.rotation.y = Math.PI
+    // trumpet.position.set(targetPosition.x, targetPosition.y, targetPosition.z)
+    // this.scene.getObjectByName('mixamorigRightHand').attach(trumpet)
+    // console.log(trumpet)
+    // // console.log(this.scene.getObjectByName('Cube004'))
   }
 
   initMobs() {
@@ -73,23 +82,15 @@ export default class World {
   }
 
   createWorld() {
-    this.sphere = new THREE.Mesh(
-      new THREE.SphereGeometry(10, 32, 32),
-      new THREE.MeshBasicMaterial({ color: 0xa9ff91 })
-    )
-    this.sphere.scale.x = 2
-
-    this.torus = new THREE.Mesh(
-      new THREE.CylinderGeometry(10.1, 10.1, 3, 32, 32),
-      new THREE.MeshBasicMaterial({ color: 0xbac1ca })
-    )
-    this.torus.rotation.z = Math.PI / 2
     this.floor = new THREE.Group()
-    this.floor.add(this.sphere)
-    this.floor.add(this.torus)
+
     this.floor.name = 'Floor'
     this.scene.add(this.floor)
-    this.torus.receiveShadow = true
+    const planet = this.resources.items.planetModel.scene
+    planet.name = 'Planet'
+    planet.scale.set(2.17, 2.17, 2.17)
+    // planet.getObjectByName('sphere_1').scale.set(1.5, 1, 1)
+    this.floor.add(planet)
 
     const light = new THREE.DirectionalLight(0xffffff, 5)
     light.position.set(-0.6, 10.5, 6)
@@ -127,7 +128,7 @@ export default class World {
   initPlayers() {
     this.experience.players.forEach((player) => {
       if (player.model) {
-        player.model.name = 'player1'
+        player.model.name = player.name
         player.model.traverse(function (object) {
           if (object.isMesh) {
             object.castShadow = true
@@ -151,6 +152,7 @@ export default class World {
     } else if (side == 'right') {
       position = new THREE.Vector3(0.7, 0, -11)
     }
+    console.log(this.resources.items.blueMobModel.scene)
 
     if (type == 'blueMob') {
       mob = this.resources.items.blueMobModel.scene.clone()

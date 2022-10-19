@@ -132,12 +132,14 @@ export default class Experience {
     player1.model.position.set(-0.7, 8.95, 4.6)
     player1.model.scale.set(0.5, 0.5, 0.5)
     player1.model.rotation.y = Math.PI
+    player1.name = 'Player1'
 
     player2.model = this.resources.items.player2Model.scene
     player2.animations = this.resources.items.player2Model.animations
     player2.model.position.set(0.8, 8.95, 4.6)
     player2.model.scale.set(0.5, 0.5, 0.5)
     player2.model.rotation.y = Math.PI
+    player2.name = 'Player2'
 
     player1.addEventListener('keydown', this.player1KeydownHandler)
     player2.addEventListener('keydown', this.player2KeydownHandler)
