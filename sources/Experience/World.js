@@ -15,6 +15,9 @@ export default class World {
     this.spawnMobDelta = 0
     this.spawnMobDelay = 1000
 
+    this.spawnPatternDelta = 0
+    this.spawnPatternDelay = 3000
+
     this.mobPatternIndex = 0
     this.mobLineIndex = 0
 
@@ -148,17 +151,26 @@ export default class World {
   }
 
   spawnPattern() {
+    this.spawnMobDelta += this.experience.time.delta
+    console.log('spawnMobDelta: ' + this.spawnMobDelta)
+
+    // Check if it's time to spawn a mob
     if (this.spawnMobDelta >= this.spawnMobDelay) {
+      // Check if there is still a mobLine to spawn
       if (this.mobLineIndex < this.mobPatterns[this.mobPatternIndex].length) {
+        // Spawn the mobs of the line
         this.mobPatterns[this.mobPatternIndex][this.mobLineIndex].forEach(
           (mob) => {
             this.spawnMob(mob.type, mob.side)
           }
         )
+
+        // Increment mobLine to go to next line or end the pattern
         this.mobLineIndex += 1
       } else {
+        // If there is no more mobLine to spawn, reset the mobLine and chose a random mobPattern
         this.mobLineIndex = 0
-        this.mobPatternIndex = 0
+        this.mobPatternIndex = 0 // TODO: random between O and this.mobPatterns.length - 1
       }
 
       this.spawnMobDelta -= this.spawnMobDelay
@@ -176,8 +188,7 @@ export default class World {
       })
     }
 
-    // Increment counter
-    this.spawnMobDelta += this.experience.time.delta
+    // Spawn mobs patterns
     this.spawnPattern()
 
     // Remove mobs when outside of view
