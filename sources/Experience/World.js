@@ -252,20 +252,18 @@ export default class World {
       this.experience.players.forEach((player) => {
         player.mixer.update(this.experience.time.delta * 0.001)
       })
+
+      // Spawn mobs patterns
+      this.spawnPattern()
     }
 
-    // Spawn mobs patterns
-    this.spawnPattern()
-    // Check collision with front mob
-    // if (this.allMobs.length > 0) this.checkMobCollision()
-
     // Remove mobs when outside of view
-    // Player collision
     for (const oneMob of this.allMobs) {
       // oneMob.position.y += Math.sin(this.experience.time.elapsed * 0.005) * 0.05
       if (oneMob.getWorldPosition(new THREE.Vector3()).z > 8) {
         this.removeMob(oneMob)
       }
+      // Player collision
       if (oneMob.getWorldPosition(new THREE.Vector3()).z > 4) {
         this.removeHeart()
         this.removeMob(oneMob)
