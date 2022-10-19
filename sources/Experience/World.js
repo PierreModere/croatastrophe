@@ -13,6 +13,38 @@ export default class World {
     this.allMobs = []
     this.counter = 0
     this.spawningDelay = 1000
+    this.previousPatterDone = false
+
+    this.mobPatterns = [
+      [
+        [
+          { type: 'blueMob', side: 'left' },
+          { type: 'redMob', side: 'right' },
+        ],
+        [
+          { type: 'blueMob', side: 'left' },
+          { type: '', side: '' },
+        ],
+        [{ type: 'redMob', side: 'right' }],
+        [
+          { type: 'blueMob', side: 'left' },
+          { type: 'redMob', side: 'right' },
+        ],
+      ],
+
+      [
+        [
+          { type: 'redMob', side: 'left' },
+          { type: 'blueMob', side: 'right' },
+        ],
+        [{ type: 'redMob', side: 'left' }],
+        [{ type: 'blueMob', side: 'right' }],
+        [
+          { type: 'redMob', side: 'left' },
+          { type: 'blueMob', side: 'right' },
+        ],
+      ],
+    ]
 
     this.resources.on('groupEnd', (_group) => {
       if (_group.name === 'base') {
@@ -111,6 +143,7 @@ export default class World {
   }
 
   spawnMob(type, side) {
+    if (!type || !side) return
     let position
     let mob
     if (side == 'left') {
@@ -147,6 +180,17 @@ export default class World {
     }
   }
 
+  spawnPattern() {
+    this.mobPatterns[0].forEach((mobLine) => {
+      if (!mobLine.done) {
+        mobLine.forEach((mob) => {
+          this.spawnMob(mob.type, mob.side)
+        })
+        mobLine.done = true
+      }
+    })
+  }
+
   resize() {}
 
   update() {
@@ -158,8 +202,8 @@ export default class World {
     }
 
     this.counter += this.experience.time.delta
-    if (this.counter >= this.spawningDelay) {
-      this.spawnMob('blueMob', 'right')
+    if (this.counter >= this.spawningDelay && !this.previousPatterDone) {
+      this.spawnPattern()
       this.counter -= this.spawningDelay
     }
 
