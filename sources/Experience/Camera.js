@@ -17,22 +17,10 @@ export default class Camera {
     this.mode = 'debug' // defaultCamera \ debugCamera
 
     this.setInstance()
-    // this.setModes()
+
+    // this.setOrbitControls()
   }
 
-  // this.instance = new THREE.PerspectiveCamera(
-  //   45,
-  //   this.config.width / this.config.height,
-  //   0.1,
-  //   100
-  // )
-  // this.instance.position.x = 0
-  // this.instance.position.y = 11.5
-  // this.instance.position.z = 12
-  // this.scene.add(this.instance)
-
-  // const axesHelper = new THREE.AxesHelper(50)
-  // this.scene.add(axesHelper)
   setInstance() {
     // Set up
     this.instance = new THREE.PerspectiveCamera(
@@ -45,9 +33,18 @@ export default class Camera {
 
     // this.instance.rotation.reorder('YXZ')
     this.instance.rotation.x = -Math.PI / 12
-    console.log(this.instance.rotation)
 
     this.scene.add(this.instance)
+  }
+
+  setOrbitControls() {
+    this.orbitControls = new OrbitControls(this.instance, this.targetElement)
+    this.orbitControls.enabled = true
+    this.orbitControls.screenSpacePanning = true
+    this.orbitControls.enableKeys = false
+    this.orbitControls.zoomSpeed = 0.25
+    this.orbitControls.enableDamping = true
+    this.orbitControls.update()
   }
 
   setModes() {
@@ -68,7 +65,7 @@ export default class Camera {
       this.modes.debug.instance,
       this.targetElement
     )
-    this.modes.debug.orbitControls.enabled = false
+    this.modes.debug.orbitControls.enabled = true
     this.modes.debug.orbitControls.screenSpacePanning = true
     this.modes.debug.orbitControls.enableKeys = false
     this.modes.debug.orbitControls.zoomSpeed = 0.25
@@ -95,11 +92,9 @@ export default class Camera {
 
   update() {
     // Update debug orbit controls
-    // this.modes.debug.orbitControls.update()
 
-    // Apply coordinates
-    // this.instance.position.copy(this.modes[this.mode].instance.position)
-    // this.instance.quaternion.copy(this.modes[this.mode].instance.quaternion)
+    // this.orbitControls.update()
+
     this.instance.updateMatrixWorld() // To be used in projection
   }
 
