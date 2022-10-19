@@ -36,7 +36,7 @@ export default class Experience {
 
     this.time = new Time()
     this.sizes = new Sizes()
-    this.gameState = 'debug'
+    this.gameState = 'menu'
 
     this.setConfig()
     this.setDebug()
