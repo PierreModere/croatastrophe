@@ -13,7 +13,8 @@ export default class World {
     this.allMobs = []
     this.counter = 0
     this.spawningDelay = 1000
-    this.previousPatterDone = false
+    this.patternIndex = 0
+    this.mobLineIndex = 0
 
     this.mobPatterns = [
       [
@@ -25,23 +26,13 @@ export default class World {
           { type: 'blueMob', side: 'left' },
           { type: '', side: '' },
         ],
-        [{ type: 'redMob', side: 'right' }],
+        [
+          { type: '', side: '' },
+          { type: 'redMob', side: 'right' },
+        ],
         [
           { type: 'blueMob', side: 'left' },
           { type: 'redMob', side: 'right' },
-        ],
-      ],
-
-      [
-        [
-          { type: 'redMob', side: 'left' },
-          { type: 'blueMob', side: 'right' },
-        ],
-        [{ type: 'redMob', side: 'left' }],
-        [{ type: 'blueMob', side: 'right' }],
-        [
-          { type: 'redMob', side: 'left' },
-          { type: 'blueMob', side: 'right' },
         ],
       ],
     ]
@@ -51,24 +42,8 @@ export default class World {
         this.experience.setPlayers()
         this.createWorld()
         this.createSkybox()
-        this.createDestroyZone()
         this.initPlayers()
-        // this.initMobs()
-
-        // setInterval(() => {
-        //   this.spawnMob('blueMob', 'left')
-        //   this.spawnMob('redMob', 'right')
-        // }, 500)
       }
-    })
-  }
-
-  initMobs() {
-    gsap.set('.experience', {
-      delay: 1,
-      onRepeat: this.spawnMob('blueMob', 'right'),
-      repeat: -1,
-      repeatDelay: 1,
     })
   }
 
@@ -112,16 +87,6 @@ export default class World {
     this.skySurface.position.z = -10
 
     this.scene.add(this.skySurface)
-  }
-
-  createDestroyZone() {
-    this.destroyZone = new THREE.Mesh(
-      new THREE.BoxGeometry(10, 0.1, 0.1),
-      new THREE.MeshBasicMaterial({ color: 0x000000, wireframe: true })
-    )
-    this.destroyZone.name = 'destroyZone'
-    this.destroyZone.position.set(0, 4, 10)
-    this.scene.add(this.destroyZone)
   }
 
   initPlayers() {
@@ -181,19 +146,27 @@ export default class World {
   }
 
   spawnPattern() {
-    this.mobPatterns[0].forEach((mobLine) => {
-      if (!mobLine.done) {
-        mobLine.forEach((mob) => {
-          this.spawnMob(mob.type, mob.side)
-        })
-        mobLine.done = true
+    if (this.counter >= this.spawningDelay) {
+      if (this.mobLineIndex < this.mobPatterns[this.patternIndex].length) {
+        this.mobPatterns[this.patternIndex][this.mobLineIndex].forEach(
+          (mob) => {
+            this.spawnMob(mob.type, mob.side)
+          }
+        )
+        this.mobLineIndex += 1
+      } else {
+        this.mobLineIndex = 0
+        this.patternIndex = 0
       }
-    })
+
+      this.counter -= this.spawningDelay
+    }
   }
 
   resize() {}
 
   update() {
+    // Rotate world
     if (this.floor) {
       this.floor.rotation.x += this.rotationSpeed
       this.experience.players.forEach((player) => {
@@ -201,21 +174,15 @@ export default class World {
       })
     }
 
+    // Increment counter
     this.counter += this.experience.time.delta
-    if (this.counter >= this.spawningDelay && !this.previousPatterDone) {
-      this.spawnPattern()
-      this.counter -= this.spawningDelay
-    }
+    this.spawnPattern()
 
+    // Remove mobs when outside of view
     for (const oneMob of this.allMobs) {
-      // console.log(
-      //   this.allMobs[0]
-      //     .getWorldPosition(new THREE.Vector3())
-      //     .distanceTo(this.scene.getObjectByName('player1').position)
-      // )
-
-      if (oneMob.getWorldPosition(new THREE.Vector3()).z > 8)
+      if (oneMob.getWorldPosition(new THREE.Vector3()).z > 8) {
         this.removeMob(oneMob)
+      }
     }
   }
 
