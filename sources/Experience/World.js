@@ -11,9 +11,15 @@ export default class World {
     this.resources = this.experience.resources
     this.rotationSpeed = 0.003
     this.allMobs = []
-    this.counter = 0
-    this.spawningDelay = 1000
-    this.previousPatterDone = false
+
+    this.spawnMobDelta = 0
+    this.spawnMobDelay = 1000
+
+    this.spawnPatternDelta = 0
+    this.spawnPatternDelay = 3000
+
+    this.mobPatternIndex = 0
+    this.mobLineIndex = 0
 
     this.mobPatterns = [
       [
@@ -25,23 +31,13 @@ export default class World {
           { type: 'blueMob', side: 'left' },
           { type: '', side: '' },
         ],
-        [{ type: 'redMob', side: 'right' }],
+        [
+          { type: '', side: '' },
+          { type: 'redMob', side: 'right' },
+        ],
         [
           { type: 'blueMob', side: 'left' },
           { type: 'redMob', side: 'right' },
-        ],
-      ],
-
-      [
-        [
-          { type: 'redMob', side: 'left' },
-          { type: 'blueMob', side: 'right' },
-        ],
-        [{ type: 'redMob', side: 'left' }],
-        [{ type: 'blueMob', side: 'right' }],
-        [
-          { type: 'redMob', side: 'left' },
-          { type: 'blueMob', side: 'right' },
         ],
       ],
     ]
@@ -51,36 +47,11 @@ export default class World {
         this.experience.setPlayers()
         this.createWorld()
         this.createSkybox()
-        this.createDestroyZone()
         this.initPlayers()
-        this.initWeapons()
       }
     })
   }
-
-  initWeapons() {
-    // const trumpet = this.resources.items.trumpetModel.scene
-    // trumpet.name = 'Trumpet'
-    // const targetPosition = this.scene
-    //   .getObjectByName('mixamorigRightHand')
-    //   .getWorldPosition(new THREE.Vector3())
-    // console.log(targetPosition)
-    // trumpet.rotation.y = Math.PI
-    // trumpet.position.set(targetPosition.x, targetPosition.y, targetPosition.z)
-    // this.scene.getObjectByName('mixamorigRightHand').attach(trumpet)
-    // console.log(trumpet)
-    // // console.log(this.scene.getObjectByName('Cube004'))
-  }
-
-  initMobs() {
-    gsap.set('.experience', {
-      delay: 1,
-      onRepeat: this.spawnMob('blueMob', 'right'),
-      repeat: -1,
-      repeatDelay: 1,
-    })
-  }
-
+  
   createWorld() {
     this.floor = new THREE.Group()
 
@@ -113,16 +84,6 @@ export default class World {
     this.skySurface.position.z = -10
 
     this.scene.add(this.skySurface)
-  }
-
-  createDestroyZone() {
-    this.destroyZone = new THREE.Mesh(
-      new THREE.BoxGeometry(10, 0.1, 0.1),
-      new THREE.MeshBasicMaterial({ color: 0x000000, wireframe: true })
-    )
-    this.destroyZone.name = 'destroyZone'
-    this.destroyZone.position.set(0, 4, 10)
-    this.scene.add(this.destroyZone)
   }
 
   initPlayers() {
@@ -183,19 +144,44 @@ export default class World {
   }
 
   spawnPattern() {
-    this.mobPatterns[0].forEach((mobLine) => {
-      if (!mobLine.done) {
-        mobLine.forEach((mob) => {
-          this.spawnMob(mob.type, mob.side)
-        })
-        mobLine.done = true
+    this.spawnMobDelta += this.experience.time.delta
+
+    // Check if it's time to spawn a mob
+    if (this.spawnMobDelta >= this.spawnMobDelay) {
+      // Check if there is still a mobLine to spawn
+      if (this.mobLineIndex < this.mobPatterns[this.mobPatternIndex].length) {
+        // Spawn the mobs of the line
+        this.mobPatterns[this.mobPatternIndex][this.mobLineIndex].forEach(
+          (mob) => {
+            this.spawnMob(mob.type, mob.side)
+          }
+        )
+
+        // Increment mobLine to go to next line or end the pattern
+        this.mobLineIndex += 1
+      } else {
+        // If there is no more mobLine to spawn
+        this.spawnPatternDelta += this.spawnMobDelta
+        console.log('spawnPatternDelta: ' + this.spawnPatternDelta)
+
+        // Check if it's time to go to the next pattern
+        if (this.spawnPatternDelta >= this.spawnPatternDelay) {
+          // Reset the mobLine and chose a random mobPattern
+          this.mobLineIndex = 0
+          this.mobPatternIndex = 0 // TODO: random between O and this.mobPatterns.length - 1
+
+          this.spawnPatternDelta = 0
+        }
       }
-    })
+
+      this.spawnMobDelta -= this.spawnMobDelay
+    }
   }
 
   resize() {}
 
   update() {
+    // Rotate world
     if (this.floor) {
       this.floor.rotation.x += this.rotationSpeed
       this.experience.players.forEach((player) => {
@@ -203,21 +189,14 @@ export default class World {
       })
     }
 
-    this.counter += this.experience.time.delta
-    if (this.counter >= this.spawningDelay && !this.previousPatterDone) {
-      this.spawnPattern()
-      this.counter -= this.spawningDelay
-    }
+    // Spawn mobs patterns
+    this.spawnPattern()
 
+    // Remove mobs when outside of view
     for (const oneMob of this.allMobs) {
-      // console.log(
-      //   this.allMobs[0]
-      //     .getWorldPosition(new THREE.Vector3())
-      //     .distanceTo(this.scene.getObjectByName('player1').position)
-      // )
-
-      if (oneMob.getWorldPosition(new THREE.Vector3()).z > 8)
+      if (oneMob.getWorldPosition(new THREE.Vector3()).z > 8) {
         this.removeMob(oneMob)
+      }
     }
   }
 
