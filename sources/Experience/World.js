@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import { ceilPowerOfTwo } from 'three/src/math/MathUtils.js'
 import Experience from './Experience.js'
-import gsap from 'gsap'
+import { gsap, Bounce } from 'gsap'
 
 export default class World {
   constructor(_options) {
@@ -9,8 +9,12 @@ export default class World {
     this.config = this.experience.config
     this.scene = this.experience.scene
     this.resources = this.experience.resources
-    this.rotationSpeed = 0.003
+    this.rotationSpeed = 0.05
     this.allMobs = []
+
+    this.playerHealth = 5
+    this.collisionDelta = 0
+    this.collisionDelay = 1000
 
     this.spawnMobDelta = 0
     this.spawnMobDelay = 1000
@@ -51,7 +55,7 @@ export default class World {
       }
     })
   }
-  
+
   createWorld() {
     this.floor = new THREE.Group()
 
@@ -113,7 +117,6 @@ export default class World {
     } else if (side == 'right') {
       position = new THREE.Vector3(0.7, 0, -11)
     }
-    console.log(this.resources.items.blueMobModel.scene)
 
     if (type == 'blueMob') {
       mob = this.resources.items.blueMobModel.scene.clone()
@@ -162,7 +165,6 @@ export default class World {
       } else {
         // If there is no more mobLine to spawn
         this.spawnPatternDelta += this.spawnMobDelta
-        console.log('spawnPatternDelta: ' + this.spawnPatternDelta)
 
         // Check if it's time to go to the next pattern
         if (this.spawnPatternDelta >= this.spawnPatternDelay) {
@@ -178,12 +180,43 @@ export default class World {
     }
   }
 
+  removeHeart() {
+    this.playerHealth -= 1
+    document.querySelector('.health').innerHTML = `${this.playerHealth}❤️`
+
+    const tl = gsap.timeline()
+    tl.to(this.experience.camera.instance.position, {
+      x: 0.4,
+      duration: 0.1,
+      ease: Bounce,
+    })
+    tl.to(this.experience.camera.instance.position, {
+      x: -0.4,
+      duration: 0.2,
+      ease: Bounce,
+    })
+    tl.to(this.experience.camera.instance.position, {
+      x: 0,
+      duration: 0.1,
+      ease: Bounce,
+    })
+
+    tl.play()
+
+    this.checkHealth()
+  }
+
+  checkHealth() {
+    if (this.playerHealth <= 0) {
+    }
+  }
+
   resize() {}
 
   update() {
     // Rotate world
     if (this.floor) {
-      this.floor.rotation.x += this.rotationSpeed
+      this.floor.rotation.x += this.experience.time.delta * 0.0003
       this.experience.players.forEach((player) => {
         player.mixer.update(this.experience.time.delta * 0.001)
       })
@@ -191,10 +224,18 @@ export default class World {
 
     // Spawn mobs patterns
     this.spawnPattern()
+    // Check collision with front mob
+    // if (this.allMobs.length > 0) this.checkMobCollision()
 
     // Remove mobs when outside of view
+    // Player collision
     for (const oneMob of this.allMobs) {
+      // oneMob.position.y += Math.sin(this.experience.time.elapsed * 0.005) * 0.05
       if (oneMob.getWorldPosition(new THREE.Vector3()).z > 8) {
+        this.removeMob(oneMob)
+      }
+      if (oneMob.getWorldPosition(new THREE.Vector3()).z > 4) {
+        this.removeHeart()
         this.removeMob(oneMob)
       }
     }
