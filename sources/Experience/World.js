@@ -22,9 +22,6 @@ export default class World {
     this.spawnPatternDelta = 0
     this.spawnPatternDelay = 3000
 
-    this.mobPatternIndex = 0
-    this.mobLineIndex = 0
-
     this.mobPatterns = [
       [
         [
@@ -45,6 +42,9 @@ export default class World {
         ],
       ],
     ]
+
+    this.mobPatternIndex = Math.floor(Math.random() * this.mobPatterns.length)
+    this.mobLineIndex = 0
 
     this.resources.on('groupEnd', (_group) => {
       if (_group.name === 'base') {
@@ -170,7 +170,9 @@ export default class World {
         if (this.spawnPatternDelta >= this.spawnPatternDelay) {
           // Reset the mobLine and chose a random mobPattern
           this.mobLineIndex = 0
-          this.mobPatternIndex = 0 // TODO: random between O and this.mobPatterns.length - 1
+          this.mobPatternIndex = Math.floor(
+            Math.random() * this.mobPatterns.length
+          )
 
           this.spawnPatternDelta = 0
         }
