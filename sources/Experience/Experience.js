@@ -200,11 +200,18 @@ export default class Experience {
 
   launchGame = () => {
     console.log('Launched!')
+    document.querySelector('.menu').classList.add('panelTransition')
     this.setResources()
     this.setWorld()
-    this.gameState = 'playing'
+    this.gameState = 'loading'
     this.player1.removeEventListener('keydown', this.launchGame)
     this.player2.removeEventListener('keydown', this.launchGame)
+    this.setEventListeners()
+  }
+
+  endLoadingAssets = () => {
+    document.querySelector('.loadingScreen').classList.add('panelTransition')
+    this.gameState = 'playing'
     this.setEventListeners()
   }
 

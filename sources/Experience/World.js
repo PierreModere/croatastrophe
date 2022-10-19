@@ -52,12 +52,16 @@ export default class World {
         this.createSkybox()
         this.experience.assignModelToPlayers()
         this.initPlayers()
+        this.experience.endLoadingAssets()
       }
     })
 
     this.resources.on('progress', (_group) => {
+      const percentage = parseInt(100 - (_group.loaded / _group.toLoad) * 100)
       if (_group.name === 'base') {
-        console.log(parseInt((_group.loaded / _group.toLoad) * 100), '%')
+        document.querySelector(
+          '.frogLoader'
+        ).style.clipPath = `inset(${percentage}% 0 0 0)`
       }
     })
   }
