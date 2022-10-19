@@ -16,6 +16,11 @@ export default [
         type: 'model',
       },
       {
+        name: 'trumpetModel',
+        source: '/assets/models/trumpet.gltf',
+        type: 'model',
+      },
+      {
         name: 'blueMobModel',
         source: '/assets/models/blueMob.gltf',
         type: 'model',
@@ -23,6 +28,11 @@ export default [
       {
         name: 'redMobModel',
         source: '/assets/models/redMob.gltf',
+        type: 'model',
+      },
+      {
+        name: 'planetModel',
+        source: '/assets/models/planet.gltf',
         type: 'model',
       },
     ],
