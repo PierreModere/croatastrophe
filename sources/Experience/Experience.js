@@ -170,19 +170,11 @@ export default class Experience {
   }
 
   setEventListeners() {
+    console.log(this.gameState)
     switch (this.gameState) {
       case 'menu':
         this.player1.addEventListener('keydown', this.launchGame)
         this.player2.addEventListener('keydown', this.launchGame)
-
-        // this.player1.addEventListener(
-        //   'joystick:move',
-        //   this.player1JoystickMoveHandler
-        // )
-        // this.player2.addEventListener(
-        //   'joystick:move',
-        //   this.player2JoystickMoveHandler
-        // )
         break
       case 'intro':
         break
@@ -195,17 +187,20 @@ export default class Experience {
         break
       case 'pause':
         break
+      case 'death':
+        this.player1.addEventListener('keydown', this.assignDeathScreenInput)
+        this.player2.addEventListener('keydown', this.assignDeathScreenInput)
+        break
     }
   }
 
   launchGame = () => {
-    console.log('Launched!')
+    this.player1.removeEventListener('keydown', this.launchGame)
+    this.player2.removeEventListener('keydown', this.launchGame)
     document.querySelector('.menu').classList.add('panelTransition')
     this.setResources()
     this.setWorld()
     this.gameState = 'loading'
-    this.player1.removeEventListener('keydown', this.launchGame)
-    this.player2.removeEventListener('keydown', this.launchGame)
     this.setEventListeners()
   }
 
@@ -213,6 +208,27 @@ export default class Experience {
     document.querySelector('.loadingScreen').classList.add('panelTransition')
     this.gameState = 'playing'
     this.setEventListeners()
+  }
+
+  endGame = () => {
+    this.player1.removeEventListener('keydown', this.world.attackMob)
+    this.player2.removeEventListener('keydown', this.world.attackMob)
+    document
+      .querySelector('.deathScreen')
+      .classList.add('deathScreenTransition')
+    this.gameState = 'death'
+    this.setEventListeners()
+  }
+
+  assignDeathScreenInput = (e) => {
+    switch (e.key) {
+      case 'a':
+        window.location.reload()
+        break
+
+      default:
+        break
+    }
   }
 
   setGameState() {}
@@ -231,6 +247,14 @@ export default class Experience {
     window.requestAnimationFrame(() => {
       this.update()
     })
+    //   if (this.gameState != 'death') {
+    //     window.requestAnimationFrame(() => {
+    //       this.update()
+    //     })
+    //   } else {
+    //     this.renderer.destroy()
+    //   }
+    // }
   }
 
   resize() {

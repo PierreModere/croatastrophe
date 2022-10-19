@@ -243,7 +243,7 @@ export default class World {
 
   checkHealth() {
     if (this.playerHealth <= 0) {
-      alert('ARRETE DE JOUER')
+      this.experience.endGame()
     }
   }
 
