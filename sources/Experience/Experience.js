@@ -46,6 +46,8 @@ export default class Experience {
     this.setWorld()
     this.setControls()
 
+    this.gameState = 'menu'
+
     this.sizes.on('resize', () => {
       this.resize()
     })
@@ -116,16 +118,21 @@ export default class Experience {
     Axis.registerGamepadEmulatorKeys(this.gamepadEmulator, 14, 'i', 1) // Gamepad button index 2 (PS4 Circle) to button "i" from group 1
     Axis.registerGamepadEmulatorKeys(this.gamepadEmulator, 12, 's', 1) // Gamepad button index 3 (PS4 Triangle) to button "s" from group 1
     Axis.registerGamepadEmulatorKeys(this.gamepadEmulator, 6, 'w', 1) // Gamepad button index 3 (PS4 Triangle) to button "s" from group 1
+
+    Axis.joystick1.setGamepadEmulatorJoystick(this.gamepadEmulator, 0) // 0 is the joystick index of the gamepad, often the one on the left side
+    Axis.joystick2.setGamepadEmulatorJoystick(this.gamepadEmulator, 1) // 1 is the joystick index of the gamepad, often the one on the right side
   }
 
   setPlayers() {
     const player1 = Axis.createPlayer({
       id: 1,
       buttons: Axis.buttonManager.getButtonsById(1),
+      joysticks: Axis.joystick1,
     })
     const player2 = Axis.createPlayer({
       id: 2,
       buttons: Axis.buttonManager.getButtonsById(2),
+      joysticks: Axis.joystick2,
     })
     player1.model = this.resources.items.player1Model.scene
     player1.animations = this.resources.items.player1Model.animations
@@ -144,8 +151,15 @@ export default class Experience {
     player1.addEventListener('keydown', this.player1KeydownHandler)
     player2.addEventListener('keydown', this.player2KeydownHandler)
 
+    player1.addEventListener('joystick:move', this.player1JoystickMoveHandler)
+    player2.addEventListener('joystick:move', this.player2JoystickMoveHandler)
+
     this.players = [player1, player2]
   }
+
+  player1JoystickMoveHandler(e) {}
+
+  player2JoystickMoveHandler(e) {}
 
   player1KeydownHandler(e) {
     console.log('Joueur 1 : ' + e.key)
@@ -157,6 +171,8 @@ export default class Experience {
     console.log('Joueur 2 : ' + e.key)
     document.querySelector('.input').innerHTML = e.key
   }
+
+  setGameState() {}
 
   update() {
     if (this.stats) this.stats.update()

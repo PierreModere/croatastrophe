@@ -2,6 +2,11 @@ import * as THREE from 'three'
 import Experience from './Experience.js'
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js'
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js'
+import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js'
+import { GammaCorrectionShader } from 'three/examples/jsm/shaders/GammaCorrectionShader.js'
+
+import { CustomOutlinePass } from './shaders/CustomOutlinePass.js'
+import { FXAAShader } from 'three/examples/jsm/shaders/FXAAShader.js'
 
 export default class Renderer {
   constructor(_options = {}) {
@@ -19,7 +24,7 @@ export default class Renderer {
       this.debugFolder = this.debug.addFolder('renderer')
     }
 
-    this.usePostprocess = false
+    this.usePostprocess = true
 
     this.setInstance()
     this.setPostProcess()
@@ -96,6 +101,8 @@ export default class Renderer {
     /**
      * Effect composer
      */
+    const depthTexture = new THREE.DepthTexture()
+
     this.renderTarget = new THREE.WebGLRenderTarget(
       this.config.width,
       this.config.height,
@@ -103,11 +110,15 @@ export default class Renderer {
         generateMipmaps: false,
         minFilter: THREE.LinearFilter,
         magFilter: THREE.LinearFilter,
-        format: THREE.RGBFormat,
+        format: THREE.RGBAFormat,
         encoding: THREE.sRGBEncoding,
         samples: 2,
+        depthBuffer: true,
       }
     )
+
+    this.renderTarget.depthTexture = depthTexture
+
     this.postProcess.composer = new EffectComposer(
       this.instance,
       this.renderTarget
@@ -115,7 +126,25 @@ export default class Renderer {
     this.postProcess.composer.setSize(this.config.width, this.config.height)
     this.postProcess.composer.setPixelRatio(this.config.pixelRatio)
 
+    // Outline pass.
+    this.postProcess.customOutline = new CustomOutlinePass(
+      new THREE.Vector2(window.innerWidth, window.innerHeight),
+      this.scene,
+      this.camera.instance
+    )
+
+    this.postProcess.gammaCorrectionPass = new ShaderPass(GammaCorrectionShader)
+
+    // Antialias pass.
+    this.postProcess.effectFXAA = new ShaderPass(FXAAShader)
+    this.postProcess.effectFXAA.uniforms.resolution.value.set(
+      1 / window.innerWidth,
+      1 / window.innerHeight
+    )
     this.postProcess.composer.addPass(this.postProcess.renderPass)
+    this.postProcess.composer.addPass(this.postProcess.customOutline)
+    // this.postProcess.composer.addPass(this.postProcess.effectFXAA)
+    this.postProcess.composer.addPass(this.postProcess.gammaCorrectionPass)
   }
 
   resize() {
