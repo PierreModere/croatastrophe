@@ -96,7 +96,7 @@ body {
   justify-content: center;
   align-items: center;
   background-color: #000000;
-  transition: background-color 3s ease;
+  transition: background-color 3s ease, transform 1.2s ease;
 }
 
 .is-loaded {

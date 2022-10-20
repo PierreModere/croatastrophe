@@ -181,6 +181,8 @@ export default class Experience {
         // this.player2.addEventListener('keydown', this.launchGame)
         break
       case 'menu':
+        this.player1.addEventListener('keydown', this.launchIntro)
+        this.player2.addEventListener('keydown', this.launchIntro)
         break
       case 'intro':
         break
@@ -188,6 +190,7 @@ export default class Experience {
         this.launchGame()
         break
       case 'playing':
+        this.world.isGameLaunched = true
         this.player1.addEventListener('keydown', this.world.handlePlayersInputs)
         this.player2.addEventListener('keydown', this.world.handlePlayersInputs)
         break
@@ -213,6 +216,21 @@ export default class Experience {
     document.querySelector('.starting-screen').classList.add('is-loaded')
     this.gameState = 'menu'
     this.setEventListeners()
+  }
+
+  launchIntro = (e) => {
+    if (e.key == 'a') {
+      this.player1.removeEventListener('keydown', this.launchIntro)
+      this.player2.removeEventListener('keydown', this.launchIntro)
+      document.querySelector(
+        '.starting-screen.is-loaded .btn'
+      ).style.opactiy = 0
+      document
+        .querySelector('.starting-screen')
+        .classList.add('panelTransition')
+      this.gameState = 'playing'
+      this.setEventListeners()
+    }
   }
 
   endGame = () => {

@@ -24,16 +24,22 @@ export default class Camera {
   setInstance() {
     // Set up
     this.instance = new THREE.PerspectiveCamera(
-      45,
+      25,
       this.config.width / this.config.height,
       0.1,
       150
     )
+
+    // fov to 45
+
     this.instance.position.set(0, 17.8, 16.6)
+    // this.instance.position.set(-15, 11, 5.2)
 
     // this.instance.rotation.reorder('YXZ')
-    this.instance.rotation.x = -Math.PI / 12
+    // this.instance.rotation.y = -Math.PI / 2
 
+    this.instance.rotation.x = -Math.PI / 12
+    // this.instance.rotation.z = Math.PI / 0.55
     this.scene.add(this.instance)
   }
 
@@ -95,6 +101,8 @@ export default class Camera {
 
     // this.orbitControls.update()
 
+    console.log(this.instance.position, this.instance.rotation)
+    //
     this.instance.updateMatrixWorld() // To be used in projection
   }
 
