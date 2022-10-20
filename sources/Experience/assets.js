@@ -3,7 +3,6 @@ export default [
     name: 'base',
     data: {},
     items: [
-      { name: 'lennaTexture', source: '/assets/lenna.png', type: 'texture' },
       { name: 'castleTexture', source: '/assets/castle.png', type: 'texture' },
       {
         name: 'player1Model',
@@ -33,11 +32,6 @@ export default [
       {
         name: 'planetModel',
         source: '/assets/models/planet.gltf',
-        type: 'model',
-      },
-      {
-        name: 'statueModel',
-        source: '/assets/models/statue.gltf',
         type: 'model',
       },
     ],

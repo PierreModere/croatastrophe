@@ -15,6 +15,7 @@ export default class World {
     this.playerHealth = 5
     this.collisionDelta = 0
     this.collisionDelay = 1000
+    this.weapons = []
 
     this.spawnMobDelta = 0
     this.spawnMobDelay = 1000
@@ -70,7 +71,6 @@ export default class World {
     this.floor = new THREE.Group()
 
     this.floor.name = 'Floor'
-    this.scene.add(this.resources.items.statueModel.scene)
     this.scene.add(this.floor)
     const planet = this.resources.items.planetModel.scene
     planet.name = 'Planet'
@@ -117,11 +117,40 @@ export default class World {
         this.scene.add(player.model)
       }
     })
+    this.initWeapons()
+  }
+
+  initWeapons() {
+    this.redWeapon = new THREE.Mesh(
+      new THREE.BoxGeometry(0.5, 0.5, 0.5),
+      new THREE.MeshBasicMaterial({ color: 0xff0000 })
+    )
+    this.redWeapon.name = 'redweapon'
+    this.experience.player2.model
+      .getObjectByName('mixamorigHeadTop_End')
+      .attach(this.redWeapon)
+    this.redWeapon.position.set(0, 30, 0)
+
+    this.blueWeapon = new THREE.Mesh(
+      new THREE.BoxGeometry(0.5, 0.5, 0.5),
+      new THREE.MeshBasicMaterial({ color: 0x0000ff })
+    )
+    this.blueWeapon.name = 'blueWeapon'
+    this.experience.player1.model
+      .getObjectByName('mixamorigHeadTop_End')
+      .attach(this.blueWeapon)
+    this.blueWeapon.position.set(0, 30, 0)
   }
 
   attackMob = (e) => {
     if (e.key == 'a') {
+      const playerID = e.id == 1 ? 0 : 1
+
       const keySide = e.id == 1 ? 'left' : 'right'
+
+      const usedWeapon = this.experience.players[playerID].weapon
+
+      console.log(usedWeapon)
 
       for (const oneMob of this.allMobs) {
         if (

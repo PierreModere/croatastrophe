@@ -160,6 +160,7 @@ export default class Experience {
     this.player1.model.scale.set(0.5, 0.5, 0.5)
     this.player1.model.rotation.y = Math.PI
     this.player1.name = 'Player1'
+    this.player1.weapon = 'blueWeapon'
 
     this.player2.model = this.resources.items.player2Model.scene
     this.player2.animations = this.resources.items.player2Model.animations
@@ -167,6 +168,7 @@ export default class Experience {
     this.player2.model.scale.set(0.5, 0.5, 0.5)
     this.player2.model.rotation.y = Math.PI
     this.player2.name = 'Player2'
+    this.player2.weapon = 'redWeapon'
   }
 
   setEventListeners() {
@@ -236,25 +238,19 @@ export default class Experience {
   update() {
     if (this.stats) this.stats.update()
 
-    this.camera.update()
+    if (this.gameState != 'death') {
+      this.camera.update()
 
-    if (this.world) this.world.update()
+      if (this.world) this.world.update()
 
-    if (this.renderer) this.renderer.update()
+      if (this.renderer) this.renderer.update()
+    }
 
     if (this.gamepadEmulator) this.gamepadEmulator.update()
 
     window.requestAnimationFrame(() => {
       this.update()
     })
-    //   if (this.gameState != 'death') {
-    //     window.requestAnimationFrame(() => {
-    //       this.update()
-    //     })
-    //   } else {
-    //     this.renderer.destroy()
-    //   }
-    // }
   }
 
   resize() {
