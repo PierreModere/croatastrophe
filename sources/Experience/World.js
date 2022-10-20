@@ -24,6 +24,24 @@ export default class World {
     this.spawnPatternDelay = 3000
 
     this.mobPatterns = [
+      // [
+      //   [
+      //     { type: 'blueMob', side: 'left' },
+      //     { type: 'redMob', side: 'right' },
+      //   ],
+      //   [
+      //     { type: 'blueMob', side: 'left' },
+      //     { type: '', side: '' },
+      //   ],
+      //   [
+      //     { type: '', side: '' },
+      //     { type: 'redMob', side: 'right' },
+      //   ],
+      //   [
+      //     { type: 'blueMob', side: 'left' },
+      //     { type: 'redMob', side: 'right' },
+      //   ],
+      // ],
       [
         [
           { type: 'blueMob', side: 'left' },
@@ -35,11 +53,11 @@ export default class World {
         ],
         [
           { type: '', side: '' },
-          { type: 'redMob', side: 'right' },
+          { type: '', side: '' },
         ],
         [
-          { type: 'blueMob', side: 'left' },
-          { type: 'redMob', side: 'right' },
+          { type: 'redMob', side: 'left' },
+          { type: 'blueMob', side: 'right' },
         ],
       ],
     ]
@@ -118,6 +136,7 @@ export default class World {
       }
     })
     this.initWeapons()
+    this.assignWeapons()
   }
 
   initWeapons() {
@@ -125,45 +144,58 @@ export default class World {
       new THREE.BoxGeometry(0.5, 0.5, 0.5),
       new THREE.MeshBasicMaterial({ color: 0xff0000 })
     )
-    this.redWeapon.name = 'redweapon'
-    this.experience.player2.model
-      .getObjectByName('mixamorigHeadTop_End')
-      .attach(this.redWeapon)
-    this.redWeapon.position.set(0, 30, 0)
+    this.redWeapon.name = 'redWeapon'
 
     this.blueWeapon = new THREE.Mesh(
       new THREE.BoxGeometry(0.5, 0.5, 0.5),
       new THREE.MeshBasicMaterial({ color: 0x0000ff })
     )
     this.blueWeapon.name = 'blueWeapon'
-    this.experience.player1.model
-      .getObjectByName('mixamorigHeadTop_End')
-      .attach(this.blueWeapon)
-    this.blueWeapon.position.set(0, 30, 0)
+    this.weapons.push(this.redWeapon, this.blueWeapon)
+  }
+
+  assignWeapons() {
+    this.experience.players.forEach((player) => {
+      const weapon = this.weapons.filter((weapon) => {
+        return weapon.name == player.weapon
+      })[0]
+      const targetParent = player.model.getObjectByName('mixamorigHeadTop_End')
+      targetParent.attach(weapon)
+      weapon.position.set(0, 30, 0)
+    })
+  }
+
+  handlePlayersInputs = (e) => {
+    if (e.key == 'a') {
+      this.attackMob(e)
+    }
+    if (e.key == 'w') {
+      this.switchWeapons()
+    }
+  }
+
+  switchWeapons = (e) => {
+    this.experience.player2.weapon = [
+      this.experience.player1.weapon,
+      (this.experience.player1.weapon = this.experience.player2.weapon),
+    ][0]
+    this.assignWeapons()
   }
 
   attackMob = (e) => {
-    if (e.key == 'a') {
-      const playerID = e.id == 1 ? 0 : 1
+    const playerID = e.id == 1 ? 0 : 1
 
-      const keySide = e.id == 1 ? 'left' : 'right'
+    const keySide = e.id == 1 ? 'left' : 'right'
 
-      const usedWeapon = this.experience.players[playerID].weapon
+    const usedWeapon = this.experience.players[playerID].weapon
 
-      console.log(usedWeapon)
-
-      for (const oneMob of this.allMobs) {
-        if (
-          oneMob.getWorldPosition(new THREE.Vector3()).z > 2 &&
-          oneMob.side == keySide
-        ) {
-          this.removeMob(oneMob)
-        } else if (
-          oneMob.getWorldPosition(new THREE.Vector3()).z > 2 &&
-          oneMob.side == keySide
-        ) {
-          this.removeMob(oneMob)
-        }
+    for (const oneMob of this.allMobs) {
+      if (
+        oneMob.getWorldPosition(new THREE.Vector3()).z > 2 &&
+        oneMob.side == keySide &&
+        oneMob.weapon == usedWeapon
+      ) {
+        this.removeMob(oneMob)
       }
     }
   }
@@ -180,8 +212,10 @@ export default class World {
 
     if (type == 'blueMob') {
       mob = this.resources.items.blueMobModel.scene.clone()
+      mob.weapon = 'blueWeapon'
     } else if (type == 'redMob') {
       mob = this.resources.items.redMobModel.scene.clone()
+      mob.weapon = 'redWeapon'
     }
     mob.name = type
     mob.type = type
