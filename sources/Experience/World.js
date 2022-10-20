@@ -84,7 +84,7 @@ export default class World {
       const percentage = parseInt(100 - (_group.loaded / _group.toLoad) * 100)
       if (_group.name === 'base') {
         document.querySelector(
-          '.logoLoader'
+          '.logo__loader'
         ).style.clipPath = `inset(0 ${percentage}% 0 0)`
       }
     })
