@@ -16,12 +16,16 @@ export default class World {
     this.collisionDelta = 0
     this.collisionDelay = 1000
     this.weapons = []
+    this.pressedBumpers = []
 
     this.spawnMobDelta = 0
     this.spawnMobDelay = 1000
 
     this.spawnPatternDelta = 0
     this.spawnPatternDelay = 3000
+
+    this.switchWeaponsDelta = 0
+    this.switchWeaponsDelay = 500
 
     this.mobPatterns = [
       // [
@@ -170,7 +174,14 @@ export default class World {
       this.attackMob(e)
     }
     if (e.key == 'w') {
-      this.switchWeapons()
+      if (this.pressedBumpers.indexOf(e.id) == -1) {
+        this.pressedBumpers.push(e.id)
+      }
+      if (this.pressedBumpers.length == 2) {
+        this.switchWeapons()
+        this.pressedBumpers = []
+        this.switchWeaponsDelta = 0
+      }
     }
   }
 
@@ -180,6 +191,17 @@ export default class World {
       (this.experience.player1.weapon = this.experience.player2.weapon),
     ][0]
     this.assignWeapons()
+  }
+
+  checkWeaponsSwitch() {
+    if (this.pressedBumpers.length > 0) {
+      this.switchWeaponsDelta += this.experience.time.delta
+
+      if (this.switchWeaponsDelta >= this.switchWeaponsDelay) {
+        this.pressedBumpers = []
+        this.switchWeaponsDelta = 0
+      }
+    }
   }
 
   attackMob = (e) => {
@@ -322,6 +344,9 @@ export default class World {
 
       // Spawn mobs patterns
       this.spawnPattern()
+
+      // Check bumpers
+      this.checkWeaponsSwitch()
     }
 
     // Remove mobs when outside of view
