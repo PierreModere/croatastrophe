@@ -31,11 +31,11 @@ export default class Renderer {
   }
 
   setInstance() {
-    this.clearColor = '#b1cbec'
+    this.clearColor = '#{b1cbec}'
 
     // Renderer
     this.instance = new THREE.WebGLRenderer({
-      alpha: false,
+      alpha: true,
       antialias: true,
     })
     this.instance.domElement.style.position = 'absolute'
@@ -44,7 +44,7 @@ export default class Renderer {
     this.instance.domElement.style.width = '100%'
     this.instance.domElement.style.height = '100%'
 
-    this.instance.setClearColor(this.clearColor, 1)
+    this.instance.setClearColor(0x000000, 0)
     this.instance.setSize(this.config.width, this.config.height)
     this.instance.setPixelRatio(this.config.pixelRatio)
 
@@ -66,7 +66,7 @@ export default class Renderer {
     // Debug
     if (this.debug) {
       this.debugFolder.addColor(this, 'clearColor').onChange(() => {
-        this.instance.setClearColor(this.clearColor)
+        this.instance.setClearColor(0x000000, 0)
       })
 
       this.debugFolder

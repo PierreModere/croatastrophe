@@ -87,6 +87,7 @@ export default class Experience {
 
   setScene() {
     this.scene = new THREE.Scene()
+    this.scene.background = null
   }
 
   setCamera() {

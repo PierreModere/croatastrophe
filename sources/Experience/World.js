@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import { ceilPowerOfTwo } from 'three/src/math/MathUtils.js'
 import Experience from './Experience.js'
-import { gsap, Bounce } from 'gsap'
+import { gsap, Bounce, Power4 } from 'gsap'
 
 export default class World {
   constructor(_options) {
@@ -72,7 +72,7 @@ export default class World {
     this.resources.on('groupEnd', (_group) => {
       if (_group.name === 'base') {
         this.createWorld()
-        this.createSkybox()
+        // this.createSkybox()
         this.experience.assignModelToPlayers()
         this.initPlayers()
         this.experience.endLoadingAssets()
@@ -217,7 +217,18 @@ export default class World {
         oneMob.side == keySide &&
         oneMob.weapon == usedWeapon
       ) {
-        this.removeMob(oneMob)
+        oneMob.hasBeenKilled = true
+        gsap.to(oneMob.scale, {
+          x: 0,
+          y: 0,
+          z: 0,
+          duration: 0.6,
+          ease: Power4,
+
+          onComplete: () => {
+            this.removeMob(oneMob)
+          },
+        })
       }
     }
   }
@@ -356,7 +367,10 @@ export default class World {
         this.removeMob(oneMob)
       }
       // Player collision
-      if (oneMob.getWorldPosition(new THREE.Vector3()).z > 4) {
+      if (
+        oneMob.getWorldPosition(new THREE.Vector3()).z > 4 &&
+        !oneMob.hasBeenKilled
+      ) {
         this.removeHeart()
         this.removeMob(oneMob)
       }
