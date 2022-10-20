@@ -70,6 +70,13 @@ export default class Resources extends EventEmitter {
       extensions: ['glb', 'gltf'],
       action: (_resource) => {
         gltfLoader.load(_resource.source, (_data) => {
+          _data.scene.traverse((child) => {
+            if (child.isMesh) {
+              if (child.material && child.material.name == 'Outline') {
+                child.material.color.set(0x000000)
+              }
+            }
+          })
           this.fileLoadEnd(_resource, _data)
         })
       },

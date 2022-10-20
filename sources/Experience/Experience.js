@@ -225,6 +225,8 @@ export default class Experience {
     this.setEventListeners()
   }
 
+  assignMenuInput = (e) => {}
+
   assignDeathScreenInput = (e) => {
     switch (e.key) {
       case 'a':
