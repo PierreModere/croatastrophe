@@ -173,12 +173,10 @@ export default class Experience {
   }
 
   setEventListeners() {
-    console.log(this.gameState)
     switch (this.gameState) {
       case 'loading':
         this.launchGame()
-        // this.player1.addEventListener('keydown', this.launchGame)
-        // this.player2.addEventListener('keydown', this.launchGame)
+
         break
       case 'menu':
         this.player1.addEventListener('keydown', this.launchIntro)

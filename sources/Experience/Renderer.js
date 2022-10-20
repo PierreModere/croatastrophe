@@ -142,7 +142,7 @@ export default class Renderer {
       1 / window.innerHeight
     )
     this.postProcess.composer.addPass(this.postProcess.renderPass)
-    this.postProcess.composer.addPass(this.postProcess.customOutline)
+    // this.postProcess.composer.addPass(this.postProcess.customOutline)
     this.postProcess.composer.addPass(this.postProcess.effectFXAA)
     this.postProcess.composer.addPass(this.postProcess.gammaCorrectionPass)
   }

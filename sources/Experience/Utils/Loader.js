@@ -5,6 +5,8 @@ import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js'
 
+import * as THREE from 'three'
+
 export default class Resources extends EventEmitter {
   /**
    * Constructor
@@ -74,6 +76,12 @@ export default class Resources extends EventEmitter {
             if (child.isMesh) {
               if (child.material && child.material.name == 'Outline') {
                 child.material.color.set(0x000000)
+              }
+              if (child.material.map && child.material.name != 'Outiline') {
+                const bakedMaterial = new THREE.MeshBasicMaterial({
+                  map: child.material.map,
+                })
+                child.material = bakedMaterial
               }
             }
           })
