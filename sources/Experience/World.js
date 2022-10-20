@@ -9,6 +9,7 @@ export default class World {
     this.config = this.experience.config
     this.scene = this.experience.scene
     this.resources = this.experience.resources
+    this.isGameLaunched = false
     this.rotationSpeed = 0.05
     this.allMobs = []
 
@@ -83,8 +84,8 @@ export default class World {
       const percentage = parseInt(100 - (_group.loaded / _group.toLoad) * 100)
       if (_group.name === 'base') {
         document.querySelector(
-          '.frogLoader'
-        ).style.clipPath = `inset(${percentage}% 0 0 0)`
+          '.logoLoader'
+        ).style.clipPath = `inset(0 ${percentage}% 0 0)`
       }
     })
   }
@@ -347,7 +348,7 @@ export default class World {
 
   update() {
     // Rotate world
-    if (this.floor) {
+    if (this.isGameLaunched) {
       this.floor.rotation.x += this.experience.time.delta * 0.0003
       this.experience.players.forEach((player) => {
         player.mixer.update(this.experience.time.delta * 0.001)
@@ -358,21 +359,21 @@ export default class World {
 
       // Check bumpers
       this.checkWeaponsSwitch()
-    }
 
-    // Remove mobs when outside of view
-    for (const oneMob of this.allMobs) {
-      // oneMob.position.y += Math.sin(this.experience.time.elapsed * 0.005) * 0.05
-      if (oneMob.getWorldPosition(new THREE.Vector3()).z > 8) {
-        this.removeMob(oneMob)
-      }
-      // Player collision
-      if (
-        oneMob.getWorldPosition(new THREE.Vector3()).z > 4 &&
-        !oneMob.hasBeenKilled
-      ) {
-        this.removeHeart()
-        this.removeMob(oneMob)
+      // Remove mobs when outside of view
+      for (const oneMob of this.allMobs) {
+        // oneMob.position.y += Math.sin(this.experience.time.elapsed * 0.005) * 0.05
+        if (oneMob.getWorldPosition(new THREE.Vector3()).z > 8) {
+          this.removeMob(oneMob)
+        }
+        // Player collision
+        if (
+          oneMob.getWorldPosition(new THREE.Vector3()).z > 4 &&
+          !oneMob.hasBeenKilled
+        ) {
+          this.removeHeart()
+          this.removeMob(oneMob)
+        }
       }
     }
   }

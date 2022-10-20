@@ -36,7 +36,7 @@ export default class Experience {
 
     this.time = new Time()
     this.sizes = new Sizes()
-    this.gameState = 'menu'
+    this.gameState = 'loading'
 
     this.setConfig()
     this.setDebug()
@@ -175,9 +175,12 @@ export default class Experience {
   setEventListeners() {
     console.log(this.gameState)
     switch (this.gameState) {
+      case 'loading':
+        this.launchGame()
+        // this.player1.addEventListener('keydown', this.launchGame)
+        // this.player2.addEventListener('keydown', this.launchGame)
+        break
       case 'menu':
-        this.player1.addEventListener('keydown', this.launchGame)
-        this.player2.addEventListener('keydown', this.launchGame)
         break
       case 'intro':
         break
@@ -200,16 +203,15 @@ export default class Experience {
   launchGame = () => {
     this.player1.removeEventListener('keydown', this.launchGame)
     this.player2.removeEventListener('keydown', this.launchGame)
-    document.querySelector('.menu').classList.add('panelTransition')
+    // document.querySelector('.menu').classList.add('panelTransition')
     this.setResources()
     this.setWorld()
-    this.gameState = 'loading'
-    this.setEventListeners()
+    // this.setEventListeners()
   }
 
   endLoadingAssets = () => {
-    document.querySelector('.loadingScreen').classList.add('panelTransition')
-    this.gameState = 'playing'
+    document.querySelector('.startingScreen').classList.add('isLoaded')
+    this.gameState = 'menu'
     this.setEventListeners()
   }
 

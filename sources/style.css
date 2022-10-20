@@ -1,3 +1,7 @@
+/* ******************************** */
+/* ************* BASE ************* */
+/* ******************************** */
+
 * {
   margin: 0;
   padding: 0;
@@ -42,8 +46,28 @@ body {
   -webkit-text-fill-color: transparent;
 }
 
+/* ******************************** */
+/* ************ HELPER ************ */
+/* ******************************** */
+
+.btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  font-size: 4rem;
+  background-color: #ffa851;
+}
+
+.btn img {
+  width: 1em;
+  height: 1em;
+}
+
+/* ******************************** */
+/* ************ CUSTOM ************ */
+/* ******************************** */
+
 .menu,
-.loadingScreen,
 .deathScreen {
   position: absolute;
   top: 0;
@@ -59,15 +83,42 @@ body {
   transition: transform 1.2s ease;
 }
 
-.menu div,
-.loadingScreen div {
+.startingScreen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #000000;
+  transition: background-color 3s ease;
+}
+
+.logo-container {
+  width: 75%;
+  position: relative;
+}
+
+.logo-container img {
+  width: 100%;
+}
+.isLoaded {
+  background-color: transparent;
+}
+
+/* .menu div,
+.startingScreen div {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 2rem;
   font-size: 1.2rem;
   color: #2f2e2e;
-}
+} */
 
 .deathScreen {
   background-color: rgba(177, 203, 236, 0.6);

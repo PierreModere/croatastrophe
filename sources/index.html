@@ -52,7 +52,7 @@
         </div>
       </div>
     </section>
-    <section class="loadingScreen">
+    <!-- <section class="startingScreen">
       <div>
         <div>
           <img
@@ -67,9 +67,20 @@
         <span>Chargement</span>
       </div>
       <div class="loader"></div>
-    </section>
-    <section class="menu">
-      <div><img src="/assets/logo.png" /> <span>Appuyez sur A</span></div>
+    </section> -->
+    <section class="startingScreen">
+      <div class="logo-container">
+        <img src="/assets/logo.png" style="position: absolute; opacity: 0.4" />
+        <img
+          class="logoLoader"
+          src="/assets/logo.png"
+          style="clip-path: inset(0 100% 0 0); transition: all 0.5s"
+        />
+      </div>
+      <div class="btn">
+        <span>Appuyer sur</span>
+        <img src="/assets/axis/input-a.svg" alt="A" />
+      </div>
     </section>
 
     <div class="experience"></div>
