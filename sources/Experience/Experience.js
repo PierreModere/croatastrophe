@@ -210,7 +210,7 @@ export default class Experience {
   }
 
   endLoadingAssets = () => {
-    document.querySelector('.startingScreen').classList.add('isLoaded')
+    document.querySelector('.starting-screen').classList.add('is-loaded')
     this.gameState = 'menu'
     this.setEventListeners()
   }
