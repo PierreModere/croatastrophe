@@ -384,8 +384,10 @@ export default class World {
   }
 
   addHeart() {
-    this.playerHealth += 1
-    document.querySelector('.health').innerHTML = `${this.playerHealth}❤️`
+    if (this.playerHealth != 5) {
+      this.playerHealth += 1
+      document.querySelector('.health').innerHTML = `${this.playerHealth}❤️`
+    }
   }
 
   removeHeart() {
