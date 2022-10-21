@@ -197,6 +197,9 @@ export default class Experience {
         this.player1.addEventListener('keydown', this.world.handlePlayersInputs)
         this.player2.addEventListener('keydown', this.world.handlePlayersInputs)
 
+        // Hide starting screen
+        document.querySelector('.starting-screen').classList.add('outro')
+
         // Display UI
         const screen = document.querySelector('.playing-screen')
         screen.style.display = 'block'
@@ -211,11 +214,13 @@ export default class Experience {
 
         // Animate controls
         gsap.from('.control-left', {
-          rotate: '-180deg',
+          rotate: '-110deg',
+          duration: 1.5,
           ease: Bounce.easeOut,
         })
         gsap.from('.control-right', {
-          rotate: '180deg',
+          rotate: '110deg',
+          duration: 1.5,
           ease: Bounce.easeOut,
         })
         break
@@ -247,12 +252,12 @@ export default class Experience {
     if (e.key == 'a') {
       this.player1.removeEventListener('keydown', this.launchIntro)
       this.player2.removeEventListener('keydown', this.launchIntro)
-      document.querySelector(
-        '.starting-screen.is-loaded .btn'
-      ).style.opactiy = 0
-      document
-        .querySelector('.starting-screen')
-        .classList.add('panelTransition')
+      // document.querySelector(
+      //   '.starting-screen.is-loaded .btn'
+      // ).style.opactiy = 0
+      // document
+      //   .querySelector('.starting-screen')
+      //   .classList.add('panelTransition')
       this.gameState = 'playing'
       this.setEventListeners()
     }
