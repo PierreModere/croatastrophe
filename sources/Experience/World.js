@@ -108,6 +108,8 @@ export default class World {
 
   createCastleSprite() {
     const castleTexture = this.resources.items.castleTexture
+    castleTexture.encoding = THREE.sRGBEncoding
+
     const surface = new THREE.Mesh(
       new THREE.PlaneGeometry(20, 20),
       new THREE.MeshBasicMaterial({
@@ -127,6 +129,7 @@ export default class World {
 
   getInputTexture(type, input) {
     const inputTexture = this.resources.items[`${type}Input${input}`]
+    inputTexture.encoding = THREE.sRGBEncoding
     const plane = new THREE.Mesh(
       new THREE.PlaneGeometry(0.8, 0.8),
       new THREE.MeshBasicMaterial({
@@ -437,7 +440,7 @@ export default class World {
       })
 
       // Spawn mobs patterns
-      this.spawnPattern()
+      // this.spawnPattern()
 
       // Check bumpers
       this.checkWeaponsSwitch()
