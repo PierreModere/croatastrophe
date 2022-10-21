@@ -257,7 +257,7 @@ export default class World {
     const inputTexture = this.resources.items[`${type}Input${input}`]
     inputTexture.encoding = THREE.sRGBEncoding
     const plane = new THREE.Mesh(
-      new THREE.PlaneGeometry(0.8, 0.8),
+      new THREE.PlaneGeometry(0.9, 0.9),
       new THREE.MeshBasicMaterial({
         map: inputTexture,
         transparent: true,
@@ -464,15 +464,9 @@ export default class World {
 
     const inputDisplay = this.getInputTexture(type, mob.key.toUpperCase())
 
-    // mob.mixer = new THREE.AnimationMixer(mob)
-
-    // mob.animations.forEach((animation) => {
-    //   mob.mixer.clipAction(animation).play()
-    // })
-
     mob.attach(inputDisplay)
 
-    inputDisplay.position.set(0, 0.9, 0)
+    inputDisplay.position.set(0, 1, 0)
 
     this.scene.attach(mob)
     mob.position.set(position.x, position.y, position.z)
