@@ -3,9 +3,10 @@ import Experience from './Experience.js'
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js'
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js'
 import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js'
+import { OutlinePass } from 'three/examples/jsm/postprocessing/OutlinePass.js'
+
 import { GammaCorrectionShader } from 'three/examples/jsm/shaders/GammaCorrectionShader.js'
 
-import { CustomOutlinePass } from './shaders/CustomOutlinePass.js'
 import { FXAAShader } from 'three/examples/jsm/shaders/FXAAShader.js'
 
 export default class Renderer {
@@ -24,7 +25,7 @@ export default class Renderer {
       this.debugFolder = this.debug.addFolder('renderer')
     }
 
-    this.usePostprocess = false
+    this.usePostprocess = true
 
     this.setInstance()
     this.setPostProcess()
@@ -127,12 +128,11 @@ export default class Renderer {
     this.postProcess.composer.setPixelRatio(this.config.pixelRatio)
 
     // Outline pass.
-    this.postProcess.customOutline = new CustomOutlinePass(
+    this.postProcess.outlinePass = new OutlinePass(
       new THREE.Vector2(window.innerWidth, window.innerHeight),
       this.scene,
       this.camera.instance
     )
-
     this.postProcess.gammaCorrectionPass = new ShaderPass(GammaCorrectionShader)
 
     // Antialias pass.
@@ -142,7 +142,8 @@ export default class Renderer {
       1 / window.innerHeight
     )
     this.postProcess.composer.addPass(this.postProcess.renderPass)
-    // this.postProcess.composer.addPass(this.postProcess.customOutline)
+    // this.postProcess.composer.addPass(this.postProcess.outlinePass)
+
     this.postProcess.composer.addPass(this.postProcess.effectFXAA)
     this.postProcess.composer.addPass(this.postProcess.gammaCorrectionPass)
   }

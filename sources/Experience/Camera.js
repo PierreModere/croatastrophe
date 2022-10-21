@@ -24,15 +24,16 @@ export default class Camera {
   setInstance() {
     // Set up
     this.instance = new THREE.PerspectiveCamera(
-      45,
+      70,
       this.config.width / this.config.height,
       0.1,
       150
     )
 
     // fov to 45
+    this.instance.position.set(0, 15, 10.2)
 
-    this.instance.position.set(0, 17.8, 16.6)
+    // this.instance.position.set(0, 17.8, 16.6)
     // this.instance.position.set(-15, 11, 5.2)
 
     // this.instance.rotation.reorder('YXZ')

@@ -157,19 +157,23 @@ export default class Experience {
   assignModelToPlayers() {
     this.player1.model = this.resources.items.player1Model.scene
     this.player1.animations = this.resources.items.player1Model.animations
-    this.player1.model.position.set(-0.7, 8.95, 4.6)
-    this.player1.model.scale.set(0.5, 0.5, 0.5)
-    this.player1.model.rotation.y = Math.PI
+    this.player1.model.position.set(-1.3, 8.95, 4.6)
+    this.player1.model.scale.set(1.8, 1.8, 1.8)
     this.player1.name = 'Player1'
     this.player1.weapon = 'redWeapon'
+    this.player1.isAttacking = false
+    this.player1.helmet = 'rougearmure001'
+    this.player1.handle = 'Mesh001'
 
     this.player2.model = this.resources.items.player2Model.scene
     this.player2.animations = this.resources.items.player2Model.animations
-    this.player2.model.position.set(0.8, 8.95, 4.6)
-    this.player2.model.scale.set(0.5, 0.5, 0.5)
-    this.player2.model.rotation.y = Math.PI
+    this.player2.model.position.set(1.2, 8.95, 4.6)
+    this.player2.model.scale.set(1.8, 1.8, 1.8)
     this.player2.name = 'Player2'
     this.player2.weapon = 'blueWeapon'
+    this.player2.isAttacking = false
+    this.player2.helmet = 'bleuarmure001'
+    this.player2.handle = 'Mesh002'
   }
 
   setEventListeners() {

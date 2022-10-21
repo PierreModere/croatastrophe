@@ -3,20 +3,14 @@ export default [
     name: 'base',
     data: {},
     items: [
-      { name: 'castleTexture', source: '/assets/castle.png', type: 'texture' },
       {
         name: 'player1Model',
-        source: '/assets/models/frog3.gltf',
+        source: '/assets/models/player1.glb',
         type: 'model',
       },
       {
         name: 'player2Model',
-        source: '/assets/models/frog2.gltf',
-        type: 'model',
-      },
-      {
-        name: 'trumpetModel',
-        source: '/assets/models/trumpet.gltf',
+        source: '/assets/models/player2.glb',
         type: 'model',
       },
       {
@@ -31,8 +25,18 @@ export default [
       },
       {
         name: 'planetModel',
-        source: '/assets/models/planet.gltf',
+        source: '/assets/models/planete.glb',
         type: 'model',
+      },
+      {
+        name: 'redFroufrou',
+        source: '/assets/redFroufrou.png',
+        type: 'texture',
+      },
+      {
+        name: 'blueFroufrou',
+        source: '/assets/blueFroufrou.png',
+        type: 'texture',
       },
     ],
   },

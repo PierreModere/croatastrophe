@@ -100,13 +100,6 @@ export default class World {
     planet.scale.set(2.17, 2.17, 2.17)
     // planet.getObjectByName('sphere_1').scale.set(1.5, 1, 1)
     this.floor.add(planet)
-
-    const light = new THREE.DirectionalLight(0xffffff, 5)
-    light.position.set(-0.6, 10.5, 6)
-    this.scene.add(light)
-
-    const helper = new THREE.DirectionalLightHelper(light, 1)
-    this.scene.add(helper)
   }
 
   createSkybox() {
@@ -135,8 +128,14 @@ export default class World {
           }
         })
         player.mixer = new THREE.AnimationMixer(player.model)
-        const runAction = player.mixer.clipAction(player.animations[0]).play()
-        player.actions = [runAction]
+
+        player.attackAction = player.mixer.clipAction(player.animations[0])
+        player.runAction = player.mixer.clipAction(player.animations[1])
+
+        player.runAction.play()
+
+        console.log(player.attackAction)
+
         this.scene.add(player.model)
       }
     })
@@ -164,9 +163,22 @@ export default class World {
       const weapon = this.weapons.filter((weapon) => {
         return weapon.name == player.weapon
       })[0]
-      const targetParent = player.model.getObjectByName('mixamorigHeadTop_End')
-      targetParent.attach(weapon)
-      weapon.position.set(0, 30, 0)
+
+      const texture =
+        weapon.name == 'redWeapon'
+          ? this.resources.items.redFroufrou
+          : this.resources.items.blueFroufrou
+      texture.encoding = THREE.sRGBEncoding
+      texture.flipY = false
+
+      const targetParent = player.model
+        .getObjectByName(player.helmet)
+        .getObjectByName(player.handle)
+
+      targetParent.material.map = texture
+
+      // targetParent.attach(weapon)
+      // weapon.position.set(0, 30, 0)
     })
   }
 
@@ -205,12 +217,30 @@ export default class World {
     }
   }
 
+  playModifierAnimation(from, fSpeed, to, tSpeed) {
+    to.setLoop(THREE.LoopOnce)
+    to.reset()
+    to.play()
+    from.crossFadeTo(to, fSpeed, true)
+    setTimeout(function () {
+      from.enabled = true
+      to.crossFadeTo(from, tSpeed, true)
+      // currentlyAnimating = false
+    }, to._clip.duration * 1000 - (tSpeed + fSpeed) * 1000)
+  }
   attackMob = (e) => {
     const playerID = e.id == 1 ? 0 : 1
 
     const keySide = e.id == 1 ? 'left' : 'right'
 
     const usedWeapon = this.experience.players[playerID].weapon
+
+    this.playModifierAnimation(
+      this.experience.players[playerID].runAction,
+      0.2,
+      this.experience.players[playerID].attackAction,
+      2
+    )
 
     for (const oneMob of this.allMobs) {
       if (
@@ -239,9 +269,9 @@ export default class World {
     let position
     let mob
     if (side == 'left') {
-      position = new THREE.Vector3(-0.7, 0, -11)
+      position = new THREE.Vector3(-1.3, 0, -11)
     } else if (side == 'right') {
-      position = new THREE.Vector3(0.7, 0, -11)
+      position = new THREE.Vector3(0.9, 0, -11)
     }
 
     if (type == 'blueMob') {
@@ -351,17 +381,21 @@ export default class World {
     if (this.isGameLaunched) {
       this.floor.rotation.x += this.experience.time.delta * 0.0003
       this.experience.players.forEach((player) => {
-        player.mixer.update(this.experience.time.delta * 0.001)
+        player.mixer.update(this.experience.time.delta * 0.003)
       })
 
       // Spawn mobs patterns
-      this.spawnPattern()
+      // this.spawnPattern()
 
       // Check bumpers
       this.checkWeaponsSwitch()
 
       // Remove mobs when outside of view
       for (const oneMob of this.allMobs) {
+        // Play mob wings animation
+
+        // oneMob.mixer.update(this.experience.time.delta * 0.001)
+
         // oneMob.position.y += Math.sin(this.experience.time.elapsed * 0.005) * 0.05
         if (oneMob.getWorldPosition(new THREE.Vector3()).z > 8) {
           this.removeMob(oneMob)
