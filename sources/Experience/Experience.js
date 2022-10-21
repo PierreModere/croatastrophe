@@ -13,6 +13,7 @@ import World from './World.js'
 import assets from './assets.js'
 
 import Axis from 'axis-api'
+import { gsap, Bounce } from 'gsap'
 import { ceilPowerOfTwo } from 'three/src/math/MathUtils.js'
 
 // import Axis from './axis/index'
@@ -195,6 +196,28 @@ export default class Experience {
         this.world.isGameLaunched = true
         this.player1.addEventListener('keydown', this.world.handlePlayersInputs)
         this.player2.addEventListener('keydown', this.world.handlePlayersInputs)
+
+        // Display UI
+        const screen = document.querySelector('.playing-screen')
+        screen.style.display = 'block'
+
+        // Animate hearts
+        gsap.from('.health__heart', {
+          y: '-150%',
+          opacity: 0,
+          stagger: 0.1,
+          ease: Bounce.easeOut,
+        })
+
+        // Animate controls
+        gsap.from('.control-left', {
+          rotate: '-180deg',
+          ease: Bounce.easeOut,
+        })
+        gsap.from('.control-right', {
+          rotate: '180deg',
+          ease: Bounce.easeOut,
+        })
         break
       case 'pause':
         break
