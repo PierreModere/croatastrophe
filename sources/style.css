@@ -44,7 +44,10 @@ body {
 /* ******************************** */
 
 .btn {
-  display: flex;
+  position: relative;
+  height: 10vh;
+
+  /* display: flex;
   align-items: center;
   gap: 0.5em;
   font-size: 3vh;
@@ -55,10 +58,14 @@ body {
   border-radius: 2em;
   box-shadow: 0 0 0 0.5em #fff, 0 0 0 0.75em #000;
   position: relative;
-  overflow: hidden;
+  overflow: hidden; */
 }
 
-.btn::before {
+.btn img {
+  height: 100%;
+}
+
+/* .btn::before {
   content: '';
   position: absolute;
   top: 50%;
@@ -66,9 +73,9 @@ body {
   transform: translate(-50%, 0);
   width: 100%;
   height: 100%;
-  /* border-radius: 100%; */
+  /border-radius: 100%; 
   background-color: rgba(0, 0, 0, 0.05);
-}
+} */
 
 .btn__input {
   width: 1em;
@@ -240,6 +247,29 @@ body {
   opacity: 0;
 }
 
+.deathScreen .logo__container {
+  height: 22vh !important;
+  opacity: 1;
+  position: absolute;
+  top: 20rem;
+}
+
+.logo__container img {
+  height: 100%;
+  opacity: 1;
+}
+
+.deathScreen .btn-container {
+  height: 9vh !important;
+  opacity: 1;
+  position: absolute;
+  bottom: 13rem;
+}
+
+.deathScreen .btn-container img {
+  height: 100%;
+  opacity: 1;
+}
 .deathScreenTransition {
   opacity: 1;
 }
@@ -249,7 +279,7 @@ body {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  gap: 3rem;
+  gap: 8rem;
 }
 .deathScreen .title {
   font-size: 4rem;

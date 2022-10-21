@@ -207,9 +207,11 @@ export default class Experience {
         this.bgMusic = new Audio('/assets/sounds/bgMusic.ogg')
         this.deathSound = new Audio('/assets/sounds/deathSound.wav')
         this.deathMusic = new Audio('/assets/sounds/deathMusic.mp3')
+        this.trumpetSound = new Audio('/assets/sounds/trumpetSound.mp3')
+        this.symbalSound = new Audio('/assets/sounds/symbalSound.wav')
 
         this.menuInputSound = new Audio('/assets/sounds/menuInputPressed.wav')
-        this.hurtSound = new Audio('/assets/sounds/hurtSound.wav')
+        this.hurtSound = new Audio('/assets/sounds/hurtSound.ogg')
         this.hurtSoundPlaying = false
         // this.hurtSound.volume(2)
 
