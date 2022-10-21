@@ -19,6 +19,8 @@ export default class World {
     this.weapons = []
     this.pressedBumpers = []
 
+    this.inputsArray = ['a', 'x', 'i', 's']
+
     this.spawnMobDelta = 0
     this.spawnMobDelay = 1000
 
@@ -73,7 +75,7 @@ export default class World {
     this.resources.on('groupEnd', (_group) => {
       if (_group.name === 'base') {
         this.createWorld()
-        // this.createSkybox()
+        this.createCastleSprite()
         this.experience.assignModelToPlayers()
         this.initPlayers()
         this.experience.endLoadingAssets()
@@ -102,19 +104,36 @@ export default class World {
     this.floor.add(planet)
   }
 
-  createSkybox() {
-    const skyTexture = this.resources.items.castleTexture
-    this.skySurface = new THREE.Mesh(
-      new THREE.PlaneGeometry(10, 10),
+  createCastleSprite() {
+    const castleTexture = this.resources.items.castleTexture
+    const surface = new THREE.Mesh(
+      new THREE.PlaneGeometry(20, 20),
       new THREE.MeshBasicMaterial({
-        map: skyTexture,
+        map: castleTexture,
+        transparent: true,
       })
     )
-    this.skySurface.rotation.y = Math.PI * 2
-    this.skySurface.position.y = 13
-    this.skySurface.position.z = -10
+    surface.name = 'Castle'
+    surface.rotation.y = Math.PI * 2
+    surface.position.x = 0.4
 
-    this.scene.add(this.skySurface)
+    surface.position.y = 10.1
+    surface.position.z = -15.5
+
+    this.scene.add(surface)
+  }
+
+  getInputTexture(type, input) {
+    const inputTexture = this.resources.items[`${type}Input${input}`]
+    const plane = new THREE.Mesh(
+      new THREE.PlaneGeometry(0.8, 0.8),
+      new THREE.MeshBasicMaterial({
+        map: inputTexture,
+        transparent: true,
+      })
+    )
+    plane.rotation.x = -Math.PI / 2
+    return plane
   }
 
   initPlayers() {
@@ -133,9 +152,6 @@ export default class World {
         player.runAction = player.mixer.clipAction(player.animations[1])
 
         player.runAction.play()
-
-        console.log(player.attackAction)
-
         this.scene.add(player.model)
       }
     })
@@ -183,7 +199,7 @@ export default class World {
   }
 
   handlePlayersInputs = (e) => {
-    if (e.key == 'a') {
+    if (e.key != 'w') {
       this.attackMob(e)
     }
     if (e.key == 'w') {
@@ -246,7 +262,8 @@ export default class World {
       if (
         oneMob.getWorldPosition(new THREE.Vector3()).z > 2 &&
         oneMob.side == keySide &&
-        oneMob.weapon == usedWeapon
+        oneMob.weapon == usedWeapon &&
+        e.key == oneMob.key
       ) {
         oneMob.hasBeenKilled = true
         gsap.to(oneMob.scale, {
@@ -285,6 +302,14 @@ export default class World {
     mob.type = type
     mob.side = side
     mob.rotation.x = -Math.PI / 2
+    mob.key =
+      this.inputsArray[Math.floor(Math.random() * this.inputsArray.length)]
+
+    const inputDisplay = this.getInputTexture(type, mob.key.toUpperCase())
+
+    mob.attach(inputDisplay)
+
+    inputDisplay.position.set(0, 0.9, 0)
 
     this.scene.attach(mob)
     mob.position.set(position.x, position.y, position.z)
@@ -385,7 +410,7 @@ export default class World {
       })
 
       // Spawn mobs patterns
-      // this.spawnPattern()
+      this.spawnPattern()
 
       // Check bumpers
       this.checkWeaponsSwitch()
