@@ -424,6 +424,7 @@ export default class World {
       this.removeHeart()
       this.playerCombo = 0
     }
+    document.querySelector('.combo__value').innerHTML = this.playerCombo
   }
 
   spawnMob(type, side) {
@@ -438,11 +439,11 @@ export default class World {
 
     if (type == 'blueMob') {
       mob = this.resources.items.blueMobModel.scene.clone()
-      mob.animations = this.resources.items.blueMobModel.animations
+      // mob.animations = this.resources.items.blueMobModel.animations
       mob.weapon = 'blueWeapon'
     } else if (type == 'redMob') {
       mob = this.resources.items.redMobModel.scene.clone()
-      mob.animations = this.resources.items.redMobModel.animations
+      // mob.animations = this.resources.items.redMobModel.animations
       mob.weapon = 'redWeapon'
     }
     mob.name = type
@@ -523,7 +524,12 @@ export default class World {
   addHeart() {
     if (this.playerHealth != 5) {
       this.playerHealth += 1
-      document.querySelector('.health').innerHTML = `${this.playerHealth}❤️`
+
+      // Add UI heart
+      const health = document.querySelector('.health')
+      const hearts = document.querySelectorAll('.health__heart')
+
+      health.appendChild(hearts[0])
     }
   }
 

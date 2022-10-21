@@ -179,6 +179,13 @@ body {
   transform-origin: bottom right;
 }
 
+.combo {
+  position: absolute;
+  top: 3vh;
+  right: 3vh;
+  font-size: 3vh;
+}
+
 /* ******************************** */
 /* ********** BACKGROUND ********** */
 /* ******************************** */

@@ -143,21 +143,22 @@ export default class Experience {
     Axis.addEventListener('exit:attempted', this.exitAttemptedHandler)
     Axis.addEventListener('exit:canceled', this.exitCanceledHandler)
     Axis.addEventListener(' exit:completed', () => {
-      console.log('aaaaa')
       this.bgMusic.stop()
     })
   }
 
   exitAttemptedHandler = () => {
     document.querySelector('.playing-screen').style.display = 'none'
-    document.querySelector('.deathScreen').stylisplay = 'none'
+    document.querySelector('.deathScreen').style.display = 'none'
     this.gameState = 'pause'
+    this.setEventListeners()
   }
 
   exitCanceledHandler = () => {
     document.querySelector('.playing-screen').style.display = 'block'
-    document.querySelector('.deathScreen').stylisplay = 'block'
+    document.querySelector('.deathScreen').style.display = 'block'
     this.gameState = 'playing'
+    this.setEventListeners()
   }
 
   setPlayers() {
@@ -216,8 +217,8 @@ export default class Experience {
         this.launchGame()
         break
       case 'playing':
-        this.world.isGameLaunched = true
         this.bgMusic.play()
+        this.world.isGameLaunched = true
 
         this.player1.addEventListener('keydown', this.world.handlePlayersInputs)
         this.player2.addEventListener('keydown', this.world.handlePlayersInputs)
@@ -250,8 +251,10 @@ export default class Experience {
         })
         break
       case 'pause':
+        this.bgMusic.pause()
         break
       case 'death':
+        this.bgMusic.pause()
         this.player1.addEventListener('keydown', this.assignDeathScreenInput)
         this.player2.addEventListener('keydown', this.assignDeathScreenInput)
         break
