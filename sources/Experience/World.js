@@ -454,11 +454,11 @@ export default class World {
 
     const inputDisplay = this.getInputTexture(type, mob.key.toUpperCase())
 
-    mob.mixer = new THREE.AnimationMixer(mob)
+    // mob.mixer = new THREE.AnimationMixer(mob)
 
-    mob.animations.forEach((animation) => {
-      mob.mixer.clipAction(animation).play()
-    })
+    // mob.animations.forEach((animation) => {
+    //   mob.mixer.clipAction(animation).play()
+    // })
 
     mob.attach(inputDisplay)
 
