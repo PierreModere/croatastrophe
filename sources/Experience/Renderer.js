@@ -144,7 +144,7 @@ export default class Renderer {
     this.postProcess.composer.addPass(this.postProcess.renderPass)
     // this.postProcess.composer.addPass(this.postProcess.outlinePass)
 
-    this.postProcess.composer.addPass(this.postProcess.effectFXAA)
+    // this.postProcess.composer.addPass(this.postProcess.effectFXAA)
     this.postProcess.composer.addPass(this.postProcess.gammaCorrectionPass)
   }
 

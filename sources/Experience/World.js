@@ -265,7 +265,7 @@ export default class World {
     const inputTexture = this.resources.items[`${type}Input${input}`]
     inputTexture.encoding = THREE.sRGBEncoding
     const plane = new THREE.Mesh(
-      new THREE.PlaneGeometry(0.8, 0.8),
+      new THREE.PlaneGeometry(0.9, 0.9),
       new THREE.MeshBasicMaterial({
         map: inputTexture,
         transparent: true,
@@ -340,6 +340,15 @@ export default class World {
   handlePlayersInputs = (e) => {
     if (e.key != 'w') {
       this.attackMob(e)
+      if (e.id == '2') {
+        this.experience.trumpetSound.pause()
+        this.experience.trumpetSound.currentTime = 0
+        this.experience.trumpetSound.play()
+      } else {
+        this.experience.symbalSound.pause()
+        this.experience.symbalSound.currentTime = 0
+        this.experience.symbalSound.play()
+      }
     }
     if (e.key == 'w') {
       if (this.pressedBumpers.indexOf(e.id) == -1) {
@@ -463,15 +472,9 @@ export default class World {
 
     const inputDisplay = this.getInputTexture(type, mob.key.toUpperCase())
 
-    // mob.mixer = new THREE.AnimationMixer(mob)
-
-    // mob.animations.forEach((animation) => {
-    //   mob.mixer.clipAction(animation).play()
-    // })
-
     mob.attach(inputDisplay)
 
-    inputDisplay.position.set(0, 0.9, 0)
+    inputDisplay.position.set(0, 1, 0)
 
     this.scene.attach(mob)
     mob.position.set(position.x, position.y, position.z)
@@ -608,6 +611,13 @@ export default class World {
           oneMob.getWorldPosition(new THREE.Vector3()).z > 4 &&
           !oneMob.hasBeenKilled
         ) {
+          if (!this.experience.hurtSoundPlaying) {
+            this.experience.hurtSound.play()
+            this.experience.hurtSoundPlaying = true
+            setTimeout(() => {
+              this.experience.hurtSoundPlaying = false
+            }, 500)
+          }
           this.manageCombo(-1)
           this.removeMob(oneMob)
         }

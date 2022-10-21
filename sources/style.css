@@ -55,7 +55,10 @@ body {
 /* ******************************** */
 
 .btn {
-  display: flex;
+  position: relative;
+  height: 10vh;
+
+  /* display: flex;
   align-items: center;
   gap: 0.5em;
   font-size: 4vh;
@@ -264,6 +267,29 @@ body {
   opacity: 0;
 }
 
+.deathScreen .logo__container {
+  height: 22vh !important;
+  opacity: 1;
+  position: absolute;
+  top: 20rem;
+}
+
+.logo__container img {
+  height: 100%;
+  opacity: 1;
+}
+
+.deathScreen .btn-container {
+  height: 9vh !important;
+  opacity: 1;
+  position: absolute;
+  bottom: 13rem;
+}
+
+.deathScreen .btn-container img {
+  height: 100%;
+  opacity: 1;
+}
 .deathScreenTransition {
   opacity: 1;
 }
@@ -273,7 +299,7 @@ body {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  gap: 3rem;
+  gap: 8rem;
 }
 .deathScreen .title {
   font-size: 4rem;
