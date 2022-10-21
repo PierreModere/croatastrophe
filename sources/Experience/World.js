@@ -14,7 +14,7 @@ export default class World {
     this.allMobs = []
 
     this.playerHealth = 5
-    this.comboLimit = 20
+    this.comboLimit = 10
     this.playerCombo = 0
     this.collisionDelta = 0
     this.collisionDelay = 1000
@@ -220,7 +220,6 @@ export default class World {
       const load100 = getComputedStyle(root).getPropertyValue('--load-100')
       const distance = load0 - load100
       const oneUnit = distance / 100
-      console.log(percentage)
 
       if (_group.name === 'base') {
         loader.style.strokeDashoffset = load0 - oneUnit * percentage
@@ -433,14 +432,31 @@ export default class World {
   manageCombo(int) {
     if (int > 0) {
       this.playerCombo += int
+
+      if (this.playerCombo >= this.comboLimit) {
+        // this.addHeart()
+        document
+          .querySelector('.combo')
+          .querySelector('img').src = `/assets/combo/0.png`
+      }
       document
         .querySelector('.combo')
         .querySelector('img').src = `/assets/combo/${this.playerCombo}.png`
-      if (this.playerCombo >= this.comboLimit) {
-        this.addHeart()
-        this.playerCombo = 0
-      }
+      gsap.from(document.querySelector('.combo').querySelector('img'), {
+        scale: 1.1,
+        stagger: 0.1,
+        ease: Bounce.easeOut,
+      })
+      gsap.from(document.querySelector('.combo').querySelector('img'), {
+        scale: 1,
+        stagger: 0.1,
+        ease: Bounce.easeOut,
+      })
     } else {
+      document
+        .querySelector('.combo')
+        .querySelector('img').src = `/assets/combo/0.png`
+
       this.removeHeart()
       this.playerCombo = 0
     }
