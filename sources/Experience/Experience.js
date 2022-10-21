@@ -66,7 +66,8 @@ export default class Experience {
     this.config.debug = window.location.hash === '#debug'
 
     // Pixel ratio
-    this.config.pixelRatio = Math.min(Math.max(window.devicePixelRatio, 1), 2)
+    // this.config.pixelRatio = Math.min(Math.max(window.devicePixelRatio, 1), 2)
+    this.config.pixelRatio = 1
 
     // Width and height
     const boundings = this.targetElement.getBoundingClientRect()
@@ -137,6 +138,26 @@ export default class Experience {
 
     Axis.joystick1.setGamepadEmulatorJoystick(this.gamepadEmulator, 0) // 0 is the joystick index of the gamepad, often the one on the left side
     Axis.joystick2.setGamepadEmulatorJoystick(this.gamepadEmulator, 1) // 1 is the joystick index of the gamepad, often the one on the right side
+
+    // Exit game events
+    Axis.addEventListener('exit:attempted', this.exitAttemptedHandler)
+    Axis.addEventListener('exit:canceled', this.exitCanceledHandler)
+    Axis.addEventListener(' exit:completed', () => {
+      console.log('aaaaa')
+      this.bgMusic.stop()
+    })
+  }
+
+  exitAttemptedHandler = () => {
+    document.querySelector('.playing-screen').style.display = 'none'
+    document.querySelector('.deathScreen').stylisplay = 'none'
+    this.gameState = 'pause'
+  }
+
+  exitCanceledHandler = () => {
+    document.querySelector('.playing-screen').style.display = 'block'
+    document.querySelector('.deathScreen').stylisplay = 'block'
+    this.gameState = 'playing'
   }
 
   setPlayers() {
@@ -181,11 +202,13 @@ export default class Experience {
     switch (this.gameState) {
       case 'loading':
         this.launchGame()
+        this.bgMusic = new Audio('/assets/sounds/bgMusic.ogg')
 
         break
       case 'menu':
         this.player1.addEventListener('keydown', this.launchIntro)
         this.player2.addEventListener('keydown', this.launchIntro)
+
         break
       case 'intro':
         break
@@ -194,6 +217,8 @@ export default class Experience {
         break
       case 'playing':
         this.world.isGameLaunched = true
+        this.bgMusic.play()
+
         this.player1.addEventListener('keydown', this.world.handlePlayersInputs)
         this.player2.addEventListener('keydown', this.world.handlePlayersInputs)
 
@@ -252,12 +277,6 @@ export default class Experience {
     if (e.key == 'a') {
       this.player1.removeEventListener('keydown', this.launchIntro)
       this.player2.removeEventListener('keydown', this.launchIntro)
-      // document.querySelector(
-      //   '.starting-screen.is-loaded .btn'
-      // ).style.opactiy = 0
-      // document
-      //   .querySelector('.starting-screen')
-      //   .classList.add('panelTransition')
       this.gameState = 'playing'
       this.setEventListeners()
     }
@@ -291,7 +310,7 @@ export default class Experience {
   update() {
     if (this.stats) this.stats.update()
 
-    if (this.gameState != 'death') {
+    if (this.gameState != 'death' && this.gameState != 'pause') {
       this.camera.update()
 
       if (this.world) this.world.update()
@@ -312,7 +331,7 @@ export default class Experience {
     this.config.width = boundings.width
     this.config.height = boundings.height
 
-    this.config.pixelRatio = Math.min(Math.max(window.devicePixelRatio, 1), 2)
+    this.config.pixelRatio = 1
 
     if (this.camera) this.camera.resize()
 

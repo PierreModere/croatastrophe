@@ -83,6 +83,11 @@ export default [
         source: '/assets/axis/blueMobInputS.png',
         type: 'texture',
       },
+      // {
+      //   name: 'bgMusic',
+      //   source: '/assets/sounds/bgMusic.ogg',
+      //   type: 'sound',
+      // },
     ],
   },
 ]

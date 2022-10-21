@@ -111,7 +111,7 @@ export default class World {
     castleTexture.encoding = THREE.sRGBEncoding
 
     const surface = new THREE.Mesh(
-      new THREE.PlaneGeometry(20, 20),
+      new THREE.PlaneGeometry(25, 25),
       new THREE.MeshBasicMaterial({
         map: castleTexture,
         transparent: true,
@@ -121,7 +121,7 @@ export default class World {
     surface.rotation.y = Math.PI * 2
     surface.position.x = 0.4
 
-    surface.position.y = 10.1
+    surface.position.y = 11.6
     surface.position.z = -15.5
 
     this.scene.add(surface)
@@ -312,9 +312,11 @@ export default class World {
 
     if (type == 'blueMob') {
       mob = this.resources.items.blueMobModel.scene.clone()
+      mob.animations = this.resources.items.blueMobModel.animations
       mob.weapon = 'blueWeapon'
     } else if (type == 'redMob') {
       mob = this.resources.items.redMobModel.scene.clone()
+      mob.animations = this.resources.items.redMobModel.animations
       mob.weapon = 'redWeapon'
     }
     mob.name = type
@@ -325,6 +327,12 @@ export default class World {
       this.inputsArray[Math.floor(Math.random() * this.inputsArray.length)]
 
     const inputDisplay = this.getInputTexture(type, mob.key.toUpperCase())
+
+    mob.mixer = new THREE.AnimationMixer(mob)
+
+    mob.animations.forEach((animation) => {
+      mob.mixer.clipAction(animation).play()
+    })
 
     mob.attach(inputDisplay)
 
@@ -440,7 +448,7 @@ export default class World {
       })
 
       // Spawn mobs patterns
-      // this.spawnPattern()
+      this.spawnPattern()
 
       // Check bumpers
       this.checkWeaponsSwitch()
