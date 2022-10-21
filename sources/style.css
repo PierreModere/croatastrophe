@@ -95,6 +95,7 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 3vh;
   background-color: #000000;
   transition: background-color 3s ease, transform 1.2s ease;
 }
@@ -111,10 +112,6 @@ body {
 .starting-screen.is-loaded .btn {
   opacity: 1;
 }
-
-/* .starting-screen.is-loaded .btn {
-  animation: opacityLoop 2s linear 2s infinite forwards;
-} */
 
 .logo__container {
   width: 75%;
@@ -136,6 +133,48 @@ body {
 }
 
 /* ******************************** */
+/* ******** PLAYING SCREEN ******** */
+/* ******************************** */
+
+.playing-screen {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.health {
+  position: absolute;
+  top: 3vh;
+  left: 3vh;
+  height: 6vh;
+}
+
+.health__heart {
+  height: 100%;
+}
+
+.control-left {
+  position: absolute;
+  bottom: 3vh;
+  left: 3vh;
+  height: 30vh;
+  transform-origin: bottom left;
+}
+
+.control-right {
+  position: absolute;
+  bottom: 3vh;
+  right: 3vh;
+  height: 30vh;
+  transform-origin: bottom right;
+}
+
+/* ******************************** */
 /* ********** BACKGROUND ********** */
 /* ******************************** */
 
@@ -152,18 +191,6 @@ body {
 /* ******************************** */
 /* *********** KEYFRAMES ********** */
 /* ******************************** */
-
-@keyframes opacityLoop {
-  0% {
-    opacity: 0;
-  }
-  50% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
-}
 
 /* ******************************** */
 /* ************ BORDEL ************ */

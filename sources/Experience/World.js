@@ -392,8 +392,12 @@ export default class World {
 
   removeHeart() {
     this.playerHealth -= 1
-    document.querySelector('.health').innerHTML = `${this.playerHealth}❤️`
 
+    // Remove UI heart
+    const hearts = document.querySelectorAll('.health__heart')
+    hearts[0].remove()
+
+    // Shake camera
     const tl = gsap.timeline()
     tl.to(this.experience.camera.instance.position, {
       x: 0.4,
