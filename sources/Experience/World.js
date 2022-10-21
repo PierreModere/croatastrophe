@@ -211,11 +211,19 @@ export default class World {
     })
 
     this.resources.on('progress', (_group) => {
-      const percentage = parseInt(100 - (_group.loaded / _group.toLoad) * 100)
+      const percentage =
+        100 - parseInt(100 - (_group.loaded / _group.toLoad) * 100)
+
+      const root = document.querySelector(':root')
+      const loader = document.querySelector('#load-icon .cls-1')
+      const load0 = getComputedStyle(root).getPropertyValue('--load-0')
+      const load100 = getComputedStyle(root).getPropertyValue('--load-100')
+      const distance = load0 - load100
+      const oneUnit = distance / 100
+      console.log(percentage)
+
       if (_group.name === 'base') {
-        document.querySelector(
-          '.logo__loader'
-        ).style.clipPath = `inset(0 ${percentage}% 0 0)`
+        loader.style.strokeDashoffset = load0 - oneUnit * percentage
       }
     })
   }
