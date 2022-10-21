@@ -600,6 +600,13 @@ export default class World {
           oneMob.getWorldPosition(new THREE.Vector3()).z > 4 &&
           !oneMob.hasBeenKilled
         ) {
+          if (!this.experience.hurtSoundPlaying) {
+            this.experience.hurtSound.play()
+            this.experience.hurtSoundPlaying = true
+            setTimeout(() => {
+              this.experience.hurtSoundPlaying = false
+            }, 500)
+          }
           this.manageCombo(-1)
           this.removeMob(oneMob)
         }

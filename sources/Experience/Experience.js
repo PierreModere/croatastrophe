@@ -13,7 +13,7 @@ import World from './World.js'
 import assets from './assets.js'
 
 import Axis from 'axis-api'
-import { gsap, Bounce } from 'gsap'
+import { gsap, Bounce, Power4 } from 'gsap'
 import { ceilPowerOfTwo } from 'three/src/math/MathUtils.js'
 
 // import Axis from './axis/index'
@@ -180,7 +180,7 @@ export default class Experience {
   assignModelToPlayers() {
     this.player1.model = this.resources.items.player1Model.scene
     this.player1.animations = this.resources.items.player1Model.animations
-    this.player1.model.position.set(-1.3, 8.95, 4.6)
+    this.player1.model.position.set(-1.3, 8.95, 8)
     this.player1.model.scale.set(1.8, 1.8, 1.8)
     this.player1.name = 'Player1'
     this.player1.weapon = 'redWeapon'
@@ -190,7 +190,7 @@ export default class Experience {
 
     this.player2.model = this.resources.items.player2Model.scene
     this.player2.animations = this.resources.items.player2Model.animations
-    this.player2.model.position.set(1.2, 8.95, 4.6)
+    this.player2.model.position.set(1.2, 8.95, 8)
     this.player2.model.scale.set(1.8, 1.8, 1.8)
     this.player2.name = 'Player2'
     this.player2.weapon = 'blueWeapon'
@@ -203,7 +203,15 @@ export default class Experience {
     switch (this.gameState) {
       case 'loading':
         this.launchGame()
+        this.playersMoving = false
         this.bgMusic = new Audio('/assets/sounds/bgMusic.ogg')
+        this.deathSound = new Audio('/assets/sounds/deathSound.wav')
+        this.deathMusic = new Audio('/assets/sounds/deathMusic.mp3')
+
+        this.menuInputSound = new Audio('/assets/sounds/menuInputPressed.wav')
+        this.hurtSound = new Audio('/assets/sounds/hurtSound.wav')
+        this.hurtSoundPlaying = false
+        // this.hurtSound.volume(2)
 
         break
       case 'menu':
@@ -222,6 +230,21 @@ export default class Experience {
 
         this.player1.addEventListener('keydown', this.world.handlePlayersInputs)
         this.player2.addEventListener('keydown', this.world.handlePlayersInputs)
+
+        // Animate players position
+
+        if (!this.playersMoving) {
+          this.players.forEach((player) => {
+            gsap.to(player.model.position, {
+              z: 4.6,
+              duration: 2,
+              ease: Power4.easeOut,
+              onComplete: () => {
+                this.playersMoving = true
+              },
+            })
+          })
+        }
 
         // Hide starting screen
         document.querySelector('.starting-screen').classList.add('outro')
@@ -254,6 +277,8 @@ export default class Experience {
         this.bgMusic.pause()
         break
       case 'death':
+        this.deathSound.play()
+        this.deathMusic.play()
         this.bgMusic.pause()
         this.player1.addEventListener('keydown', this.assignDeathScreenInput)
         this.player2.addEventListener('keydown', this.assignDeathScreenInput)
@@ -278,6 +303,7 @@ export default class Experience {
 
   launchIntro = (e) => {
     if (e.key == 'a') {
+      this.menuInputSound.play()
       this.player1.removeEventListener('keydown', this.launchIntro)
       this.player2.removeEventListener('keydown', this.launchIntro)
       this.gameState = 'playing'
