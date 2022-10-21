@@ -1,4 +1,19 @@
 /* ******************************** */
+/* ************ IMPORT ************ */
+/* ******************************** */
+
+@import url('https://fonts.googleapis.com/css2?family=Grandstander:wght@600&display=swap');
+
+@font-face {
+  font-family: 'Guyon Gazebo';
+  src: url('../public/assets/fonts/GuyonGazebo-Regular.woff') format('woff2'),
+    url('../public/assets/fonts/GuyonGazebo-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ******************************** */
 /* *********** VARIABLES ********** */
 /* ******************************** */
 
@@ -12,7 +27,9 @@
 /* ************* BASE ************* */
 /* ******************************** */
 
-* {
+*,
+*::before,
+*::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -21,22 +38,14 @@
 html,
 body {
   overflow: hidden;
-  font-family: 'Guyon Gazebo' !important;
+  font-family: 'Grandstander', cursive;
+  font-weight: 600s;
 }
 
 .experience {
   position: fixed;
   width: 100vw;
   height: 100vh;
-}
-
-@font-face {
-  font-family: 'Guyon Gazebo';
-  src: url('../public/assets/fonts/GuyonGazebo-Regular.woff') format('woff2'),
-    url('../public/assets/fonts/GuyonGazebo-Regular.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
 }
 
 /* ******************************** */
