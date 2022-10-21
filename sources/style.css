@@ -55,10 +55,7 @@ body {
 /* ******************************** */
 
 .btn {
-  position: relative;
-  height: 10vh;
-
-  /* display: flex;
+  display: flex;
   align-items: center;
   gap: 0.5em;
   font-size: 4vh;
