@@ -33,24 +33,7 @@ export default class World {
     this.switchWeaponsDelay = 500
 
     this.mobPatterns = [
-      // [
-      //   [
-      //     { type: 'blueMob', side: 'left' },
-      //     { type: 'redMob', side: 'right' },
-      //   ],
-      //   [
-      //     { type: 'blueMob', side: 'left' },
-      //     { type: '', side: '' },
-      //   ],
-      //   [
-      //     { type: '', side: '' },
-      //     { type: 'redMob', side: 'right' },
-      //   ],
-      //   [
-      //     { type: 'blueMob', side: 'left' },
-      //     { type: 'redMob', side: 'right' },
-      //   ],
-      // ],
+      // PATTERN 1
       [
         [
           { type: 'blueMob', side: 'left' },
@@ -59,6 +42,149 @@ export default class World {
         [
           { type: 'blueMob', side: 'left' },
           { type: '', side: '' },
+        ],
+        [
+          { type: '', side: '' },
+          { type: 'redMob', side: 'right' },
+        ],
+        [
+          { type: 'blueMob', side: 'left' },
+          { type: 'redMob', side: 'right' },
+        ],
+      ],
+      // PATTERN 1 (revert)
+      [
+        [
+          { type: 'redMob', side: 'left' },
+          { type: 'blueMob', side: 'right' },
+        ],
+        [
+          { type: 'redMob', side: 'left' },
+          { type: '', side: '' },
+        ],
+        [
+          { type: '', side: '' },
+          { type: 'blueMob', side: 'right' },
+        ],
+        [
+          { type: 'redMob', side: 'left' },
+          { type: 'blueMob', side: 'right' },
+        ],
+      ],
+      // PATTERN 2
+      [
+        [
+          { type: 'blueMob', side: 'left' },
+          { type: 'redMob', side: 'right' },
+        ],
+        [
+          { type: 'blueMob', side: 'left' },
+          { type: '', side: '' },
+        ],
+        [
+          { type: '', side: '' },
+          { type: '', side: '' },
+        ],
+        [
+          { type: 'redMob', side: 'left' },
+          { type: 'blueMob', side: 'right' },
+        ],
+        [
+          { type: '', side: '' },
+          { type: '', side: '' },
+        ],
+        [
+          { type: '', side: '' },
+          { type: 'redMob', side: 'right' },
+        ],
+        [
+          { type: 'blueMob', side: 'left' },
+          { type: 'redMob', side: 'right' },
+        ],
+      ],
+      // PATTERN 2 (revert)
+      [
+        [
+          { type: 'redMob', side: 'left' },
+          { type: 'blueMob', side: 'right' },
+        ],
+        [
+          { type: 'redMob', side: 'left' },
+          { type: '', side: '' },
+        ],
+        [
+          { type: '', side: '' },
+          { type: '', side: '' },
+        ],
+        [
+          { type: 'blueMob', side: 'left' },
+          { type: 'redMob', side: 'right' },
+        ],
+        [
+          { type: '', side: '' },
+          { type: '', side: '' },
+        ],
+        [
+          { type: '', side: '' },
+          { type: 'blueMob', side: 'right' },
+        ],
+        [
+          { type: 'redMob', side: 'left' },
+          { type: 'blueMob', side: 'right' },
+        ],
+      ],
+      // PATTERN 3
+      [
+        [
+          { type: 'redMob', side: 'left' },
+          { type: 'blueMob', side: 'right' },
+        ],
+        [
+          { type: '', side: '' },
+          { type: '', side: '' },
+        ],
+        [
+          { type: 'blueMob', side: 'left' },
+          { type: 'redMob', side: 'right' },
+        ],
+        [
+          { type: '', side: '' },
+          { type: '', side: '' },
+        ],
+        [
+          { type: 'redMob', side: 'left' },
+          { type: 'blueMob', side: 'right' },
+        ],
+        [
+          { type: '', side: '' },
+          { type: '', side: '' },
+        ],
+        [
+          { type: 'blueMob', side: 'left' },
+          { type: 'redMob', side: 'right' },
+        ],
+      ],
+      // PATTERN 3 (revert)
+      [
+        [
+          { type: 'blueMob', side: 'left' },
+          { type: 'redMob', side: 'right' },
+        ],
+        [
+          { type: '', side: '' },
+          { type: '', side: '' },
+        ],
+        [
+          { type: 'redMob', side: 'left' },
+          { type: 'blueMob', side: 'right' },
+        ],
+        [
+          { type: '', side: '' },
+          { type: '', side: '' },
+        ],
+        [
+          { type: 'blueMob', side: 'left' },
+          { type: 'redMob', side: 'right' },
         ],
         [
           { type: '', side: '' },
