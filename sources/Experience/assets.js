@@ -83,11 +83,111 @@ export default [
         source: '/assets/axis/blueMobInputS.png',
         type: 'texture',
       },
-      // {
-      //   name: 'bgMusic',
-      //   source: '/assets/sounds/bgMusic.ogg',
-      //   type: 'sound',
-      // },
+      {
+        name: '0',
+        source: '/assets/combo/0.png',
+        type: 'texture',
+      },
+      {
+        name: '1',
+        source: '/assets/combo/1.png',
+        type: 'texture',
+      },
+      {
+        name: '2',
+        source: '/assets/combo/2.png',
+        type: 'texture',
+      },
+      {
+        name: '3',
+        source: '/assets/combo/3.png',
+        type: 'texture',
+      },
+      {
+        name: '4',
+        source: '/assets/combo/4.png',
+        type: 'texture',
+      },
+      {
+        name: '5',
+        source: '/assets/combo/5.png',
+        type: 'texture',
+      },
+      {
+        name: '6',
+        source: '/assets/combo/6.png',
+        type: 'texture',
+      },
+      {
+        name: '7',
+        source: '/assets/combo/7.png',
+        type: 'texture',
+      },
+      {
+        name: '8',
+        source: '/assets/combo/8.png',
+        type: 'texture',
+      },
+      {
+        name: '9',
+        source: '/assets/combo/9.png',
+        type: 'texture',
+      },
+      {
+        name: '10',
+        source: '/assets/combo/10.png',
+        type: 'texture',
+      },
+      {
+        name: '11',
+        source: '/assets/combo/11.png',
+        type: 'texture',
+      },
+      {
+        name: '12',
+        source: '/assets/combo/12.png',
+        type: 'texture',
+      },
+      {
+        name: '13',
+        source: '/assets/combo/13.png',
+        type: 'texture',
+      },
+      {
+        name: '14',
+        source: '/assets/combo/14.png',
+        type: 'texture',
+      },
+      {
+        name: '15',
+        source: '/assets/combo/15.png',
+        type: 'texture',
+      },
+      {
+        name: '16',
+        source: '/assets/combo/16.png',
+        type: 'texture',
+      },
+      {
+        name: '17',
+        source: '/assets/combo/17.png',
+        type: 'texture',
+      },
+      {
+        name: '18',
+        source: '/assets/combo/18.png',
+        type: 'texture',
+      },
+      {
+        name: '19',
+        source: '/assets/combo/19.png',
+        type: 'texture',
+      },
+      {
+        name: '20',
+        source: '/assets/combo/20.png',
+        type: 'texture',
+      },
     ],
   },
 ]

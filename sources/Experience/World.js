@@ -433,6 +433,9 @@ export default class World {
   manageCombo(int) {
     if (int > 0) {
       this.playerCombo += int
+      document
+        .querySelector('.combo')
+        .querySelector('img').src = `/assets/combo/${this.playerCombo}.png`
       if (this.playerCombo >= this.comboLimit) {
         this.addHeart()
         this.playerCombo = 0
@@ -441,7 +444,8 @@ export default class World {
       this.removeHeart()
       this.playerCombo = 0
     }
-    document.querySelector('.combo__value').innerHTML = this.playerCombo
+
+    // document.querySelector('.combo').innerHTML = this.playerCombo
   }
 
   spawnMob(type, side) {

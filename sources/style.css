@@ -209,8 +209,13 @@ body {
 .combo {
   position: absolute;
   top: 3vh;
-  right: 3vh;
+  right: 6vh;
   font-size: 3vh;
+  height: 6vw;
+}
+
+.combo img {
+  height: 100%;
 }
 
 /* ******************************** */
