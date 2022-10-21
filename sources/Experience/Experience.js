@@ -200,15 +200,25 @@ export default class Experience {
   }
 
   setEventListeners() {
+    console.log(this.gameState)
     switch (this.gameState) {
       case 'loading':
         this.launchGame()
         this.bgMusic = new Audio('/assets/sounds/bgMusic.ogg')
 
+        // Display loading screen
+        document.querySelector('.loading-screen').classList.add('is-display')
+
         break
       case 'menu':
         this.player1.addEventListener('keydown', this.launchIntro)
         this.player2.addEventListener('keydown', this.launchIntro)
+
+        // Hide loading screen
+        document.querySelector('.loading-screen').classList.add('outro')
+
+        // Display starting screen
+        document.querySelector('.starting-screen').classList.add('is-display')
 
         break
       case 'intro':
