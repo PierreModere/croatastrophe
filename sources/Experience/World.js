@@ -332,6 +332,15 @@ export default class World {
   handlePlayersInputs = (e) => {
     if (e.key != 'w') {
       this.attackMob(e)
+      if (e.id == '2') {
+        this.experience.trumpetSound.pause()
+        this.experience.trumpetSound.currentTime = 0
+        this.experience.trumpetSound.play()
+      } else {
+        this.experience.symbalSound.pause()
+        this.experience.symbalSound.currentTime = 0
+        this.experience.symbalSound.play()
+      }
     }
     if (e.key == 'w') {
       if (this.pressedBumpers.indexOf(e.id) == -1) {
