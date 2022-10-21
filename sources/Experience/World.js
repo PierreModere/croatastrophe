@@ -14,6 +14,8 @@ export default class World {
     this.allMobs = []
 
     this.playerHealth = 5
+    this.comboLimit = 20
+    this.playerCombo = 0
     this.collisionDelta = 0
     this.collisionDelay = 1000
     this.weapons = []
@@ -266,6 +268,7 @@ export default class World {
         e.key == oneMob.key
       ) {
         oneMob.hasBeenKilled = true
+        this.manageCombo(1)
         gsap.to(oneMob.scale, {
           x: 0,
           y: 0,
@@ -278,6 +281,19 @@ export default class World {
           },
         })
       }
+    }
+  }
+
+  manageCombo(int) {
+    if (int > 0) {
+      this.playerCombo += int
+      if (this.playerCombo >= this.comboLimit) {
+        this.addHeart()
+        this.playerCombo = 0
+      }
+    } else {
+      this.removeHeart()
+      this.playerCombo = 0
     }
   }
 
@@ -367,6 +383,11 @@ export default class World {
     }
   }
 
+  addHeart() {
+    this.playerHealth += 1
+    document.querySelector('.health').innerHTML = `${this.playerHealth}❤️`
+  }
+
   removeHeart() {
     this.playerHealth -= 1
     document.querySelector('.health').innerHTML = `${this.playerHealth}❤️`
@@ -430,7 +451,7 @@ export default class World {
           oneMob.getWorldPosition(new THREE.Vector3()).z > 4 &&
           !oneMob.hasBeenKilled
         ) {
-          this.removeHeart()
+          this.manageCombo(-1)
           this.removeMob(oneMob)
         }
       }
