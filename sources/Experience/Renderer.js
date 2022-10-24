@@ -5,6 +5,8 @@ import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js'
 import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js'
 import { OutlinePass } from 'three/examples/jsm/postprocessing/OutlinePass.js'
 
+import { CustomOutlinePass } from './shaders/CustomOutlinePass.js'
+
 import { GammaCorrectionShader } from 'three/examples/jsm/shaders/GammaCorrectionShader.js'
 
 import { FXAAShader } from 'three/examples/jsm/shaders/FXAAShader.js'
@@ -142,9 +144,9 @@ export default class Renderer {
       1 / window.innerHeight
     )
     this.postProcess.composer.addPass(this.postProcess.renderPass)
-    // this.postProcess.composer.addPass(this.postProcess.outlinePass)
+    this.postProcess.composer.addPass(this.postProcess.outlinePass)
 
-    // this.postProcess.composer.addPass(this.postProcess.effectFXAA)
+    this.postProcess.composer.addPass(this.postProcess.effectFXAA)
     this.postProcess.composer.addPass(this.postProcess.gammaCorrectionPass)
   }
 

@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import { ceilPowerOfTwo } from 'three/src/math/MathUtils.js'
 import Experience from './Experience.js'
-import { gsap, Bounce, Power4 } from 'gsap'
+import { gsap, Bounce, Power4, Elastic } from 'gsap'
 
 export default class World {
   constructor(_options) {
@@ -14,7 +14,7 @@ export default class World {
     this.allMobs = []
 
     this.playerHealth = 5
-    this.comboLimit = 10
+    this.comboLimit = 20
     this.playerCombo = 0
     this.collisionDelta = 0
     this.collisionDelay = 1000
@@ -331,6 +331,12 @@ export default class World {
 
       targetParent.material.map = texture
 
+      gsap.fromTo(
+        player.model.scale,
+        { y: 2.1 },
+        { y: 1.8, duration: 0.5, ease: 'elastic.out(1, 0.3)' }
+      )
+
       // targetParent.attach(weapon)
       // weapon.position.set(0, 30, 0)
     })
@@ -569,8 +575,7 @@ export default class World {
 
     // Remove UI heart
     const hearts = document.querySelectorAll('.health__heart')
-    hearts[0].remove()
-
+    if (hearts.length > 0) hearts[0].remove()
     // Shake camera
     const tl = gsap.timeline()
     tl.to(this.experience.camera.instance.position, {
