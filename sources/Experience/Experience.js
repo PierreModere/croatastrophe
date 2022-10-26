@@ -65,6 +65,8 @@ export default class Experience {
     // Debug
     this.config.debug = window.location.hash === '#debug'
 
+    this.config.pcMode = window.location.hash === '#PC'
+
     // Pixel ratio
     // this.config.pixelRatio = Math.min(Math.max(window.devicePixelRatio, 1), 2)
     this.config.pixelRatio = 1
@@ -78,6 +80,9 @@ export default class Experience {
   setDebug() {
     if (this.config.debug) {
       this.debug = new GUI()
+    }
+    if (this.config.pcMode) {
+      this.pcMode = true
     }
   }
 

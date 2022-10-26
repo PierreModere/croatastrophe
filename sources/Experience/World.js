@@ -261,7 +261,7 @@ export default class World {
   }
 
   getInputTexture(type, input, side) {
-    const inputTexture = this.experience.debug
+    const inputTexture = this.experience.pcMode
       ? this.resources.items[`${side}PC${type}Input${input}`]
       : this.resources.items[`${type}Input${input}`]
     inputTexture.encoding = THREE.sRGBEncoding
