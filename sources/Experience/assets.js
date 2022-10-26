@@ -84,6 +84,86 @@ export default [
         type: 'texture',
       },
       {
+        name: 'leftPCredMobInputA',
+        source: '/assets/axis/leftPCredMobInputA.png',
+        type: 'texture',
+      },
+      {
+        name: 'leftPCredMobInputX',
+        source: '/assets/axis/leftPCredMobInputX.png',
+        type: 'texture',
+      },
+      {
+        name: 'leftPCredMobInputI',
+        source: '/assets/axis/leftPCredMobInputI.png',
+        type: 'texture',
+      },
+      {
+        name: 'leftPCredMobInputS',
+        source: '/assets/axis/leftPCredMobInputS.png',
+        type: 'texture',
+      },
+      {
+        name: 'leftPCblueMobInputA',
+        source: '/assets/axis/leftPCblueMobInputA.png',
+        type: 'texture',
+      },
+      {
+        name: 'leftPCblueMobInputX',
+        source: '/assets/axis/leftPCblueMobInputX.png',
+        type: 'texture',
+      },
+      {
+        name: 'leftPCblueMobInputI',
+        source: '/assets/axis/leftPCblueMobInputI.png',
+        type: 'texture',
+      },
+      {
+        name: 'leftPCblueMobInputS',
+        source: '/assets/axis/leftPCblueMobInputS.png',
+        type: 'texture',
+      },
+      {
+        name: 'rightPCredMobInputA',
+        source: '/assets/axis/rightPCredMobInputA.png',
+        type: 'texture',
+      },
+      {
+        name: 'rightPCredMobInputX',
+        source: '/assets/axis/rightPCredMobInputX.png',
+        type: 'texture',
+      },
+      {
+        name: 'rightPCredMobInputI',
+        source: '/assets/axis/rightPCredMobInputI.png',
+        type: 'texture',
+      },
+      {
+        name: 'rightPCredMobInputS',
+        source: '/assets/axis/rightPCredMobInputS.png',
+        type: 'texture',
+      },
+      {
+        name: 'rightPCblueMobInputA',
+        source: '/assets/axis/rightPCblueMobInputA.png',
+        type: 'texture',
+      },
+      {
+        name: 'rightPCblueMobInputX',
+        source: '/assets/axis/rightPCblueMobInputX.png',
+        type: 'texture',
+      },
+      {
+        name: 'rightPCblueMobInputI',
+        source: '/assets/axis/rightPCblueMobInputI.png',
+        type: 'texture',
+      },
+      {
+        name: 'rightPCblueMobInputS',
+        source: '/assets/axis/rightPCblueMobInputS.png',
+        type: 'texture',
+      },
+      {
         name: '0',
         source: '/assets/combo/0.png',
         type: 'texture',

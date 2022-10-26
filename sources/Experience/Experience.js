@@ -129,12 +129,14 @@ export default class Experience {
     Axis.registerGamepadEmulatorKeys(this.gamepadEmulator, 2, 'i', 2) // Gamepad button index 2 (PS4 Circle) to button "i" from group 1
     Axis.registerGamepadEmulatorKeys(this.gamepadEmulator, 3, 's', 2) // Gamepad button index 3 (PS4 Triangle) to button "s" from group 1
     Axis.registerGamepadEmulatorKeys(this.gamepadEmulator, 7, 'w', 2) // Gamepad button index 3 (PS4 Triangle) to button "s" from group 1
+    Axis.registerKeys(' ', 'w', 2) // keyboard key Space to button "w" from group 1
 
     Axis.registerGamepadEmulatorKeys(this.gamepadEmulator, 13, 'a', 1) // Gamepad button index 0 (PS4 X) to button "a" from group 1
     Axis.registerGamepadEmulatorKeys(this.gamepadEmulator, 15, 'x', 1) // Gamepad button index 1 (PS4 Square) to button "x" from group 1
     Axis.registerGamepadEmulatorKeys(this.gamepadEmulator, 14, 'i', 1) // Gamepad button index 2 (PS4 Circle) to button "i" from group 1
     Axis.registerGamepadEmulatorKeys(this.gamepadEmulator, 12, 's', 1) // Gamepad button index 3 (PS4 Triangle) to button "s" from group 1
     Axis.registerGamepadEmulatorKeys(this.gamepadEmulator, 6, 'w', 1) // Gamepad button index 3 (PS4 Triangle) to button "s" from group 1
+    Axis.registerKeys('Enter', 'w', 1) // keyboard key "Enter" to button "w" from group 2
 
     Axis.joystick1.setGamepadEmulatorJoystick(this.gamepadEmulator, 0) // 0 is the joystick index of the gamepad, often the one on the left side
     Axis.joystick2.setGamepadEmulatorJoystick(this.gamepadEmulator, 1) // 1 is the joystick index of the gamepad, often the one on the right side

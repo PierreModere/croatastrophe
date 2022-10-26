@@ -260,8 +260,10 @@ export default class World {
     this.scene.add(surface)
   }
 
-  getInputTexture(type, input) {
-    const inputTexture = this.resources.items[`${type}Input${input}`]
+  getInputTexture(type, input, side) {
+    const inputTexture = this.experience.debug
+      ? this.resources.items[`${side}PC${type}Input${input}`]
+      : this.resources.items[`${type}Input${input}`]
     inputTexture.encoding = THREE.sRGBEncoding
     const plane = new THREE.Mesh(
       new THREE.PlaneGeometry(0.9, 0.9),
@@ -496,7 +498,7 @@ export default class World {
     mob.key =
       this.inputsArray[Math.floor(Math.random() * this.inputsArray.length)]
 
-    const inputDisplay = this.getInputTexture(type, mob.key.toUpperCase())
+    const inputDisplay = this.getInputTexture(type, mob.key.toUpperCase(), side)
 
     mob.attach(inputDisplay)
 
