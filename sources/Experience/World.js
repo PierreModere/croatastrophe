@@ -442,10 +442,11 @@ export default class World {
       this.playerCombo += int
 
       if (this.playerCombo >= this.comboLimit) {
-        // this.addHeart()
+        this.addHeart()
         document
           .querySelector('.combo')
           .querySelector('img').src = `/assets/combo/0.png`
+        this.playerCombo = 0
       }
       document
         .querySelector('.combo')
@@ -566,9 +567,10 @@ export default class World {
 
       // Add UI heart
       const health = document.querySelector('.health')
-      const hearts = document.querySelectorAll('.health__heart')
-
-      health.appendChild(hearts[0])
+      const heart = document.createElement('span')
+      heart.innerHTML =
+        '<img class="health__heart" src="/assets/icons/heart.svg" alt="" />'
+      health.appendChild(heart)
     }
   }
 
